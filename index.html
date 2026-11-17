@@ -1,0 +1,1505 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>English Step by Step</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:wght@600;800&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: one narrow column. Course map (five coloured modules) -> lesson player (one idea per screen, sticky Continue bar) -> notes and revision. */
+:root{
+  --bg:#F3F5F9;--surface:#FFFFFF;--ink:#14213D;--muted:#566480;--line:#D6DDE9;
+  --good:#17784B;--good-bg:#E2F4EA;--bad:#B3261E;--bad-bg:#FCEAE8;--focus:#1B5BC9;
+  --m1:#1B5BC9;--m2:#0B7A6B;--m3:#A4501A;--m4:#B0284E;--m5:#4F6B10;
+  --sb-bg:#D9E6FB;--vb-bg:#FDE0CC;--ob-bg:#D5F0E4;--ad-bg:#E8DAFA;--tm-bg:#FFEFB3;
+  --display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0D1526;--surface:#162038;--ink:#E8EDF7;--muted:#98A5C2;--line:#2A3857;
+  --good:#5ED39C;--good-bg:#12372A;--bad:#FF8F85;--bad-bg:#3E1F22;--focus:#74A8FF;
+  --m1:#74A8FF;--m2:#4FD0BA;--m3:#EE9A60;--m4:#FF8FA8;--m5:#B5D865;
+  --sb-bg:#22407A;--vb-bg:#6E3814;--ob-bg:#17503D;--ad-bg:#472C74;--tm-bg:#5E4D10;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D1526;--surface:#162038;--ink:#E8EDF7;--muted:#98A5C2;--line:#2A3857;
+  --good:#5ED39C;--good-bg:#12372A;--bad:#FF8F85;--bad-bg:#3E1F22;--focus:#74A8FF;
+  --m1:#74A8FF;--m2:#4FD0BA;--m3:#EE9A60;--m4:#FF8FA8;--m5:#B5D865;
+  --sb-bg:#22407A;--vb-bg:#6E3814;--ob-bg:#17503D;--ad-bg:#472C74;--tm-bg:#5E4D10;color-scheme:dark}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.6 var(--body);padding-block:18px 40px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:720px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0}
+h1{font-weight:800;font-size:clamp(2.1rem,8vw,3.1rem);line-height:1.02;letter-spacing:-.02em}
+.lede{margin:10px 0 0;color:var(--muted);max-width:34em}
+p{margin:0 0 12px}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.label,.qlabel{font:500 .74rem/1.2 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin:0 0 8px}
+.note{color:var(--muted);font-size:.93rem}
+
+/* word-job colours used inside lessons */
+sb,vb,ob,ad,tm,hl{border-radius:4px;padding:1px 5px;font-weight:700;white-space:normal}
+sb{background:var(--sb-bg)}vb{background:var(--vb-bg)}ob{background:var(--ob-bg)}ad{background:var(--ad-bg)}tm,hl{background:var(--tm-bg)}
+
+.tabs{display:flex;gap:2px;border-bottom:2px solid var(--line);margin:22px 0 22px;overflow-x:auto}
+.tab{appearance:none;border:0;background:none;font:700 1rem var(--body);color:var(--muted);padding:10px 14px;border-bottom:3px solid transparent;margin-bottom:-2px;cursor:pointer;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+
+.btn{appearance:none;border:2px solid var(--ink);background:var(--ink);color:var(--bg);border-radius:10px;padding:12px 22px;font:700 1.05rem var(--body);cursor:pointer}
+.btn.ghost{background:none;color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--ink)}
+.btn.sm{padding:6px 12px;font-size:.92rem}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btnrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+
+/* course map */
+.overall{margin:0 0 24px}
+.segs{display:flex;gap:4px;margin:8px 0 14px}
+.seg{height:12px;background:var(--line);border-radius:3px;overflow:hidden;min-width:0}
+.seg>i{display:block;height:100%;background:var(--c)}
+.mod{margin:0 0 30px}
+.mod>h2{font-size:1.45rem;color:var(--c);border-top:6px solid var(--c);padding-top:8px}
+.mod>p{color:var(--muted);margin:2px 0 12px}
+.lrow{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:0 0 8px;font:inherit;cursor:pointer}
+.lrow:hover{border-color:var(--ink)}
+.lrow .num{flex:none;width:34px;height:34px;border-radius:50%;border:2px solid var(--c);display:grid;place-items:center;font:500 .85rem var(--mono);color:var(--c)}
+.lrow.done .num{background:var(--c);color:var(--bg)}
+.lrow .lt{flex:1;min-width:0}
+.lrow .lt b{display:block;font-family:var(--display);font-size:1.05rem}
+.lrow .lt span{color:var(--muted);font-size:.9rem;line-height:1.3;display:block}
+.lrow .st2{flex:none;font:500 .78rem var(--mono);color:var(--muted);text-align:right}
+
+/* player */
+.ptop{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.ptitle{flex:1;min-width:0;font:700 .98rem var(--display);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pcount{font:500 .85rem var(--mono);color:var(--muted)}
+.meter{height:8px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:18px}
+.meter>i{display:block;height:100%;background:var(--ink);border-radius:4px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 18px 8px;margin-bottom:16px}
+.st{font-size:1.45rem;line-height:1.2;margin:0 0 14px}
+.card ul{margin:0 0 14px;padding-left:1.2em}
+.card li{margin:0 0 6px}
+.q{font:600 clamp(1.3rem,5vw,1.65rem)/1.4 var(--display);margin:0 0 18px;overflow-wrap:anywhere}
+.blank{display:inline-block;min-width:3.4em;text-align:center;border-bottom:3px solid var(--ink);padding:0 .2em;margin:0 .1em}
+.blank.ok{color:var(--good);border-color:var(--good)}
+
+.ex{margin:0 0 14px}
+.exrow{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--line)}
+.exrow:first-child{border-top:0}
+.listen{flex:none;appearance:none;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);border-radius:50%;width:34px;height:34px;display:grid;place-items:center;cursor:pointer;margin-top:1px}
+.listen:hover{border-color:var(--ink)}
+.extext{min-width:0;flex:1}
+.sent{font-size:1.12rem;line-height:1.7}
+.exrow .note{margin-top:2px}
+.tip{background:var(--tm-bg);border-radius:10px;padding:11px 14px;margin:0 0 14px}
+.tip .label{color:var(--ink);margin-bottom:2px}
+.tip p{margin:0}
+.warn{border:1px solid var(--line);border-radius:10px;margin:0 0 14px;overflow:hidden}
+.wl{padding:9px 14px}
+.wl.bad{background:var(--bad-bg)}.wl.good{background:var(--good-bg)}
+.wl b{font:500 .72rem var(--mono);letter-spacing:.08em;text-transform:uppercase;display:inline-block;min-width:4.4em}
+.wl.bad b{color:var(--bad)}.wl.good b{color:var(--good)}
+.warn .why{padding:8px 14px;color:var(--muted);font-size:.95rem}
+.rules{margin:0 0 14px}
+.rule{display:grid;grid-template-columns:96px minmax(0,1fr);gap:4px 12px;padding:10px 0;border-top:1px solid var(--line)}
+.rule:first-child{border-top:0}
+.rule .rl{font:500 .8rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:4px}
+.rule .rf{font-size:1.05rem;min-width:0;overflow-wrap:anywhere}
+@media (max-width:480px){.rule{grid-template-columns:1fr}}
+.tablewrap{overflow-x:auto;margin:0 0 14px}
+table{border-collapse:collapse;width:100%;font-size:.98rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:500 .74rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.tl{margin:6px 0 16px;padding:6px 4px 0}
+.tltrack{position:relative;height:30px}
+.tltrack::before{content:"";position:absolute;left:0;right:0;top:12px;height:6px;border-radius:3px;background:var(--line)}
+.tlseg{position:absolute;top:8px;height:14px;border-radius:7px;background:var(--m1)}
+.tldot{position:absolute;top:6px;width:18px;height:18px;margin-left:-9px;border-radius:50%;background:var(--m1)}
+.tlnow{position:absolute;left:50%;top:0;height:30px;width:3px;margin-left:-1.5px;background:var(--ink)}
+.tlpin{position:absolute;top:-2px;transform:translateX(-50%);font-size:.78rem;white-space:nowrap;color:var(--muted)}
+.tl.two .tltrack{margin-top:22px}
+.tllab{display:grid;grid-template-columns:1fr 1fr 1fr;font:500 .72rem var(--mono);letter-spacing:.1em;color:var(--muted)}
+.tllab span:nth-child(2){text-align:center}.tllab span:nth-child(3){text-align:right}
+.tlnote{margin:6px 0 0;font-size:.95rem}
+
+.rgrid{display:grid;gap:8px;margin:0 0 10px}
+.rcard{appearance:none;width:100%;text-align:left;background:var(--bg);color:var(--ink);border:2px solid var(--line);border-radius:10px;padding:11px 14px;font:700 1.05rem var(--body);cursor:pointer}
+.rcard.open{border-color:var(--ink)}
+.rbody{padding:10px 14px 4px}
+
+.opts{display:grid;gap:10px;margin:0 0 14px}
+.opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--surface);color:var(--ink);border:2px solid var(--line);border-radius:10px;padding:12px 14px;font:700 1.08rem var(--body);cursor:pointer;min-width:0}
+.opt:hover{border-color:var(--ink)}
+.opt .key{flex:none;width:28px;height:28px;border-radius:6px;background:var(--bg);display:grid;place-items:center;font:500 .85rem var(--mono);color:var(--muted)}
+.opt .otext{flex:1;min-width:0;overflow-wrap:anywhere}
+.opt .mark{flex:none;font:500 .72rem var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.opt.correct{border-color:var(--good);background:var(--good-bg)}.opt.correct .mark{color:var(--good)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg)}.opt.wrong .mark{color:var(--bad)}
+.opt.dim{opacity:.55}.opt.locked{pointer-events:none}
+.inp{width:100%;font:600 1.2rem var(--body);color:var(--ink);background:var(--bg);border:2px solid var(--line);border-radius:10px;padding:12px 14px;margin:0 0 12px}
+.slots,.bank{display:flex;flex-wrap:wrap;gap:8px;padding:10px;border-radius:10px}
+.slots{min-height:58px;border:2px dashed var(--line);margin-bottom:12px;background:var(--bg)}
+.tile{appearance:none;font:700 1.05rem var(--body);color:var(--ink);background:var(--surface);border:2px solid var(--ink);border-radius:8px;padding:8px 12px;cursor:pointer}
+.tile.ghost{visibility:hidden;border-color:transparent}
+.tile.right{border-color:var(--good);background:var(--good-bg)}
+.tok{appearance:none;font:inherit;font-size:1.15rem;color:var(--ink);background:var(--bg);border:2px solid transparent;border-radius:8px;padding:3px 8px;margin:0 2px 6px 0;cursor:pointer}
+.tok.on{border-color:var(--ink);background:var(--tm-bg)}
+.tok.right{border-color:var(--good);background:var(--good-bg)}
+.tok.bad{border-color:var(--bad);background:var(--bad-bg)}
+.toks{margin:0 0 14px;line-height:2.1}
+.srows{display:grid;gap:10px;margin:0 0 14px}
+.srow{border:2px solid var(--line);border-radius:10px;padding:10px 12px}
+.srow.right{border-color:var(--good);background:var(--good-bg)}.srow.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.sit{display:block;font-weight:700;margin-bottom:8px;overflow-wrap:anywhere}
+.sbtns{display:flex;flex-wrap:wrap;gap:6px}
+.sbtn{appearance:none;font:700 .92rem var(--body);color:var(--ink);background:var(--surface);border:2px solid var(--line);border-radius:999px;padding:5px 12px;cursor:pointer}
+.sbtn[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.srow .fixnote{display:block;margin-top:6px;font-size:.9rem}
+.mcols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;margin:0 0 14px}
+.mcol{display:grid;gap:8px;align-content:start}
+.mbtn{appearance:none;font:700 1rem var(--body);color:var(--ink);background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:10px 10px;cursor:pointer;text-align:left;overflow-wrap:anywhere}
+.mbtn.sel{border-color:var(--ink);background:var(--tm-bg)}
+.mbtn.matched{border-color:var(--good);background:var(--good-bg);pointer-events:none}
+.mbtn.shake{border-color:var(--bad);background:var(--bad-bg)}
+
+.fb{border-radius:12px;padding:14px 16px 4px;margin:0 0 16px;border:1px solid var(--line)}
+.fb.ok{background:var(--good-bg);border-color:var(--good)}.fb.no{background:var(--bad-bg);border-color:var(--bad)}
+.fhead{font:800 1.2rem var(--display);margin:0 0 8px}
+.fb p{margin:0 0 10px}
+.bar{position:sticky;bottom:0;background:var(--bg);border-top:1px solid var(--line);padding:12px 0 calc(12px + env(safe-area-inset-bottom,0px));margin-top:8px}
+.bar .btn{width:100%}
+
+.score{font:800 clamp(3rem,16vw,5rem)/1 var(--display);margin:4px 0 6px}
+.stars{font-size:1.8rem;letter-spacing:.15em;color:var(--m3);margin:0 0 8px}
+.remember{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px 4px;margin:16px 0}
+.remember ul{margin:0 0 10px;padding-left:1.2em}.remember li{margin:0 0 6px}
+
+.field{width:100%;font:inherit;color:var(--ink);background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:10px 12px;margin:0 0 16px}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
+.pill{appearance:none;background:var(--surface);color:var(--ink);border:2px solid var(--line);border-radius:999px;padding:7px 16px;font:700 .95rem var(--body);cursor:pointer}
+.pill[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.nd{background:var(--surface);border:1px solid var(--line);border-radius:12px;margin:0 0 8px}
+.nd summary{cursor:pointer;padding:12px 14px;font:700 1.02rem var(--display)}
+.nd .nb{padding:0 14px 8px}.nd ul{margin:0 0 8px;padding-left:1.2em}.nd li{margin:0 0 6px}
+.empty{background:var(--surface);border:1px dashed var(--muted);border-radius:12px;padding:16px;margin:0 0 16px}
+@media (prefers-reduced-motion:no-preference){.meter>i,.seg>i{transition:width .3s}}
+</style>
+
+<div class="wrap">
+  <div id="shell">
+    <header>
+      <h1>English Step by Step</h1>
+      <p class="lede">Learn English basics on your own. Each lesson explains one idea in simple words, shows examples, and lets you practise at once.</p>
+    </header>
+    <div class="tabs" role="tablist" aria-label="Sections">
+      <button class="tab" role="tab" id="t-home" aria-controls="home" aria-selected="true" type="button">Course</button>
+      <button class="tab" role="tab" id="t-revise" aria-controls="revise" aria-selected="false" type="button">Revise</button>
+      <button class="tab" role="tab" id="t-notes" aria-controls="notes" aria-selected="false" type="button">Notes</button>
+    </div>
+    <main>
+      <section id="home" role="tabpanel" aria-labelledby="t-home"></section>
+      <section id="revise" role="tabpanel" aria-labelledby="t-revise" hidden></section>
+      <section id="notes" role="tabpanel" aria-labelledby="t-notes" hidden></section>
+    </main>
+  </div>
+  <section id="player" hidden></section>
+</div>
+
+<script>
+/* ---- helpers the lesson files use ---- */
+var COURSE=[];
+var H={
+  MOD:function(id,title,blurb,lessons){COURSE.push({id:id,title:title,blurb:blurb,lessons:lessons})},
+  L:function(id,title,sub,steps,sum){return {id:id,title:title,sub:sub,steps:steps,sum:sum||[]}},
+  learn:function(title){return {t:"learn",title:title,b:[].slice.call(arguments,1)}},
+  mcq:function(q,o,a,e,x){return {t:"mcq",q:q,o:o,a:a,e:e,x:x}},
+  build:function(s,e,extra,q){return {t:"build",s:s,e:e,extra:extra||[],q:q}},
+  type:function(q,a,e,h){return {t:"type",q:q,a:[].concat(a),e:e,h:h}},
+  find:function(q,s,e){return {t:"find",q:q,s:s,e:e}},
+  sort:function(q,c,i,e){return {t:"sort",q:q,c:c,i:i,e:e}},
+  match:function(q,p,e){return {t:"match",q:q,p:p,e:e}},
+  reveal:function(title,intro,i){return {t:"reveal",title:title,intro:intro,i:i}}
+};
+</script>
+<script>
+with(H){
+
+MOD("m1","1. Building blocks","The kinds of words, and how each one works.",[
+
+L("parts","Words have jobs","The 8 kinds of words",[
+ learn("Every word has a job",
+  "Think of a sentence like a cricket team. Every player has a job. In the same way, every word in English has a job. There are <b>8 kinds of words</b>. They are called <b>parts of speech</b>.",
+  ["ex","<sb>Ravi</sb> <vb>drinks</vb> <ad>hot</ad> <ob>tea</ob>.|Ravi = a name · drinks = an action · hot = describes the tea · tea = a thing"],
+  "In this course, colours show the job: <sb>blue</sb> = who does it, <vb>orange</vb> = the action, <ob>green</ob> = the thing, <ad>purple</ad> = extra describing word, <tm>yellow</tm> = time or key word.",
+  "Next, tap each card to meet the 8 jobs."),
+ reveal("Meet the 8 jobs","Tap each card to open it.",[
+  ["1. Noun","Names a person, place or thing. <i>teacher, Madurai, laptop, honesty</i>"],
+  ["2. Pronoun","Takes the place of a noun, so we do not repeat it. <i>he, she, it, they, we</i>"],
+  ["3. Verb","Shows an action or a state. <i>run, write, is, have</i>"],
+  ["4. Adjective","Describes a noun. <i>big, red, honest</i>"],
+  ["5. Adverb","Tells how, when or where something happens. <i>quickly, today, here</i>"],
+  ["6. Preposition","Shows place, time or direction. <i>in, on, at, to, from</i>"],
+  ["7. Conjunction","Joins words or sentences. <i>and, but, because, or</i>"],
+  ["8. Interjection","A short word for a feeling. <i>Wow! Oh! Oops!</i>"]]),
+ find("Tap the verb (the action word).","Priya [writes] a report every day.","“Writes” is the action, so it is the verb."),
+ find("Tap the two nouns.","The [manager] sent an [email].","“Manager” is a person and “email” is a thing. Both are nouns."),
+ sort("What job does each word do?",["Noun","Verb","Adjective"],[["teacher",0],["write",1],["happy",2],["laptop",0],["run",1],["small",2],["Chennai",0],["speak",1]],"Nouns name things, verbs show actions, adjectives describe."),
+ mcq("In “She walks slowly.” what job does “slowly” do?",["Noun","Adverb","Adjective"],1,"“Slowly” tells <b>how</b> she walks. Words that tell how, when or where something happens are adverbs."),
+ mcq("Which word is a preposition? “The keys are on the table.”",["keys","are","on","table"],2,"“On” shows where the keys are. Words like in, on, at, under are prepositions."),
+ match("Match each word to its job.",[["and","Conjunction"],["Wow!","Interjection"],["they","Pronoun"],["quickly","Adverb"]],"Conjunction joins, interjection shows feeling, pronoun replaces a noun, adverb tells how.")
+],["<b>Noun</b> names a person, place or thing.","<b>Pronoun</b> replaces a noun (he, she, they).","<b>Verb</b> shows an action or state.","<b>Adjective</b> describes a noun. <b>Adverb</b> tells how, when, where.","<b>Preposition</b> shows place or time. <b>Conjunction</b> joins. <b>Interjection</b> shows feeling."]),
+
+L("nouns","Nouns and plurals","One thing or many things",[
+ learn("What is a noun?",
+  "A <b>noun</b> is a word for a person, a place, a thing or an idea.",
+  ["table",["Type","Examples"],["Person","teacher, mother, Ravi"],["Place","office, Madurai, India"],["Thing","laptop, phone, tea"],["Idea (you cannot touch it)","happiness, honesty, time"]],
+  "Names of people and places start with a <b>capital letter</b>: Ravi, Madurai, India. These are <b>proper nouns</b>. Other nouns, like teacher or city, are <b>common nouns</b>."),
+ learn("One or many? Making plurals",
+  "Most nouns just add <b>-s</b> for “many”. Some have special rules.",
+  ["table",["Rule","One → Many"],["Most nouns: add -s","book → books · laptop → laptops"],["Ends in s, x, ch, sh: add -es","bus → buses · box → boxes · watch → watches · dish → dishes"],["Consonant + y: change y to -ies","city → cities · story → stories"],["Vowel + y: just add -s","day → days · key → keys"],["Ends in f or fe: change to -ves","leaf → leaves · knife → knives"],["Irregular: no rule, just learn","man → men · woman → women · child → children · foot → feet · person → people"]],
+  ["tip","Some words never change: <i>sheep, fish</i>. And some words are never plural: <i>information, advice</i> (you will learn these later)."]),
+ mcq("What is the plural of “city”?",["citys","cities","cityes"],1,"Consonant + y: change y to -ies. The letter before y is t (a consonant), so: cities."),
+ mcq("What is the plural of “box”?",["boxs","boxes","boxies"],1,"Words ending in x take -es: boxes."),
+ mcq("What is the plural of “day”?",["days","daies","dayes"],0,"Vowel + y: just add -s. The letter before y is a (a vowel), so: days."),
+ type("Type the plural of “child”.","children","This is an irregular plural. Learn it: child → children.","It starts with “child”"),
+ type("Type the plural of “watch”.","watches","Words ending in -ch take -es: watches."),
+ sort("Singular (one) or plural (many)?",["Singular","Plural"],[["women",1],["bus",0],["people",1],["leaves",1],["foot",0],["boxes",1]],"“Women”, “people”, “leaves” and “boxes” mean many."),
+ mcq("Which sentence is correct?",["There are three childs in the room.","There are three children in the room.","There are three childrens in the room."],1,"“Children” is already plural. Never add -s to it.")
+],["Add <b>-s</b> to make most plurals.","After s, x, ch, sh add <b>-es</b>. Consonant + y becomes <b>-ies</b>.","Learn the irregular ones: man/men, woman/women, child/children, person/people.","Proper nouns (names) start with a capital letter."]),
+
+L("pron","Pronouns","I, me, my, mine and friends",[
+ learn("Pronouns save time",
+  "We do not say “Priya” again and again. We say “she”. A <b>pronoun</b> takes the place of a noun.",
+  ["ex","Priya is a trainer. <sb>She</sb> teaches English.|She = Priya","The batch is ready. <sb>It</sb> starts today.|It = the batch"]),
+ learn("Four kinds you need",
+  "The same person has different forms. The form depends on the <b>job</b> in the sentence.",
+  ["table",["Subject (does it)","Object (receives it)","Before a noun","Alone"],["I","me","my","mine"],["you","you","your","yours"],["he","him","his","his"],["she","her","her","hers"],["it","it","its","—"],["we","us","our","ours"],["they","them","their","theirs"]],
+  ["ex","<sb>I</sb> like <ob>her</ob>.|I = subject, her = object","This is <ad>my</ad> pen. That pen is <ad>yours</ad>.|my + noun · yours stands alone"],
+  ["warn","Me and Ravi went to the office.","Ravi and I went to the office.","I am the one who did it, so I use the subject form: I."],
+  ["tip","<b>Its</b> shows belonging (the dog wagged its tail). <b>It's</b> means “it is”."]),
+ mcq("Ravi is my friend. ___ studies with me.",["Him","He","His"],1,"Ravi does the action, so we need the subject form: He."),
+ mcq("The manager called ___ yesterday.",["I","me","my"],1,"After a verb, we use the object form: me."),
+ mcq("This laptop is not mine. It is ___.",["you","your","yours"],2,"No noun follows, so we use the “alone” form: yours."),
+ mcq("The dog wagged ___ tail.",["it","its","it's"],1,"“Its” shows belonging. “It's” would mean “it is”."),
+ type("Priya and Ravi are teachers. ___ work in Madurai.","They","Two people, so we use: They.","Not he, not she. Think of two people."),
+ find("Tap all the pronouns.","[She] told [me] that [they] will call [us].","She, me, they and us all replace nouns.")
+],["Subject forms: <b>I, you, he, she, it, we, they</b>.","Object forms: <b>me, you, him, her, it, us, them</b>.","Before a noun: <b>my, your, his, her, its, our, their</b>.","Alone: <b>mine, yours, his, hers, ours, theirs</b>.","<b>its</b> = belongs to it. <b>it's</b> = it is."]),
+
+L("verbs","Verbs and their forms","V1, V2, V3, -s and -ing",[
+ learn("What is a verb?",
+  "A <b>verb</b> shows an <b>action</b> (run, eat, write) or a <b>state</b> (be, have, know). Every sentence needs a verb. It is the heart of the sentence.",
+  ["ex","Ravi <vb>eats</vb> lunch.|action","The sky <vb>is</vb> blue.|state (the verb be)"]),
+ learn("The three forms: V1, V2, V3",
+  "Every verb has three forms. These forms build all the tenses, so learn them well.",
+  ["table",["V1 (base)","V2 (past)","V3 (past participle)"],["walk","walked","walked"],["play","played","played"],["go","went","gone"],["eat","ate","eaten"],["take","took","taken"],["write","wrote","written"],["see","saw","seen"]],
+  "<b>Regular verbs</b> add <b>-ed</b> for V2 and V3. <b>Irregular verbs</b> change in their own way. Learn a few irregular verbs every day."),
+ learn("Spelling: -s, -ing and -ed",
+  "Small spelling rules, big marks.",
+  ["table",["Rule","Example"],["he / she / it: add -s","work → works"],["Ends in s, sh, ch, x, o: add -es","watch → watches · go → goes · fix → fixes"],["Consonant + y: change to -ies","study → studies · try → tries"],["-ing: drop the silent e","make → making · write → writing"],["-ing: short vowel + one consonant: double it","run → running · sit → sitting · stop → stopping"],["-ed: consonant + y becomes -ied","study → studied · carry → carried"],["-ed: ends in e, add d","like → liked"]]),
+ type("He ___ every night. (study) Write the correct form.","studies","Consonant + y: change y to -ies.","Change the y"),
+ type("They are ___ in the park. (run)","running","Short vowel + one consonant: double the n, then add -ing.","Double the n"),
+ type("Priya ___ to the office yesterday. (go) Write the past form.","went","go → went is irregular. Learn it.","It does not end in -ed"),
+ match("Match V1 with V3.",[["go","gone"],["take","taken"],["write","written"],["eat","eaten"]],"These are irregular. V3 is used after have, has and had."),
+ mcq("What is V3 of “see”?",["saw","seen","seed"],1,"see → saw → seen. V2 is saw. V3 is seen."),
+ mcq("I have ___ that film.",["saw","seen","see"],1,"After have we use V3: seen.")
+],["V1 = base verb (go). V2 = past (went). V3 = past participle (gone).","Regular verbs add <b>-ed</b>. Irregular verbs must be learned.","he / she / it takes <b>-s</b>: she works.","Double the last letter in short words: run → running.","Consonant + y becomes <b>-ies / -ied</b>."]),
+
+L("adj","Adjectives and adverbs","Describing words",[
+ learn("Adjectives describe nouns",
+  "An <b>adjective</b> tells us more about a noun: what kind, how many, what colour.",
+  ["ex","She is a <ad>kind</ad> trainer.|kind describes trainer","I have <ad>two</ad> <ad>black</ad> bags.|two = how many · black = colour"],
+  "Adjectives <b>never change</b> for singular or plural: a big room, two big rooms (never “bigs”).",
+  ["tip","Easy order for many adjectives: opinion → size → colour. A <ad>nice</ad> <ad>big</ad> <ad>red</ad> car."]),
+ learn("Adverbs tell how, when, where",
+  "An <b>adverb</b> usually describes a verb. Many adverbs are the adjective + <b>-ly</b>.",
+  ["table",["Adjective","Adverb"],["quick","quickly"],["careful","carefully"],["slow","slowly"],["happy","happily"]],
+  "Some adverbs do not end in -ly: <i>fast, hard, late, today, here, very</i>.",
+  ["warn","He speaks English good.","He speaks English well.","“Good” is an adjective. “Well” is the adverb for how we do things."],
+  "<b>Adverbs of frequency</b> (always, usually, often, sometimes, never) go <b>before</b> the main verb but <b>after</b> am / is / are.",
+  ["ex","He <tm>usually</tm> <vb>walks</vb> to office.|before the main verb","Ravi <vb>is</vb> <tm>always</tm> on time.|after be"]),
+ find("Tap the adjective.","Meena has a [beautiful] voice.","“Beautiful” describes the noun “voice”."),
+ find("Tap the adverb.","The trainer speaks [clearly].","“Clearly” tells how he speaks."),
+ mcq("She sings very ___.",["beautiful","beautifully","beauty"],1,"“Sings” is a verb, so we need an adverb: beautifully."),
+ mcq("He is a ___ driver.",["careful","carefully","care"],0,"“Driver” is a noun, so we need an adjective: careful."),
+ mcq("Which sentence is correct?",["She dances good.","She dances well.","She dances goodly."],1,"Use <b>well</b> to say how we do something."),
+ build("I usually drink tea in the morning.","The adverb “usually” goes before the main verb."),
+ build("She is always on time.","The adverb “always” goes after “is”.")
+],["Adjectives describe nouns and never take -s.","Adverbs describe verbs. Many end in <b>-ly</b>.","<b>good</b> (adjective) · <b>well</b> (adverb).","Frequency words go before the main verb, after am / is / are."]),
+
+L("art","a, an, the","Articles",[
+ learn("Three little words",
+  "<b>a / an</b> = one thing, when we do not say exactly which one. <b>the</b> = a thing we both know.",
+  ["ex","I need <hl>a</hl> pen.|any pen","Please give me <hl>the</hl> pen on the table.|that special pen","She is <hl>an</hl> engineer.|one engineer, not special"]),
+ learn("a or an? Listen to the sound",
+  "Use <b>an</b> before a vowel <b>sound</b>. Use <b>a</b> before a consonant <b>sound</b>.",
+  ["table",["Word","Use","Why"],["apple","an","starts with a vowel sound"],["book","a","consonant sound"],["hour","an","the h is silent: “our”"],["university","a","starts with “yoo”, a consonant sound"],["MBA","an","M says “em”, a vowel sound"]],
+  ["tip","Listen to the first <b>sound</b>, not the first letter."]),
+ learn("When to use “the”, and when to use nothing",
+  ["list","Use <b>the</b> when it is clear which one: <i>Close the door.</i>","Use <b>the</b> for the second time you speak about it: <i>I saw a dog. The dog was big.</i>","Use <b>the</b> for one-of-a-kind things: <i>the sun, the moon, the Internet</i>.","Use <b>no article</b> for general ideas and plurals: <i>I like tea. Dogs are loyal.</i>","Use <b>no article</b> for languages, subjects and meals: <i>I speak English. We had lunch.</i>","Most place names have no article (India, Madurai). Use <b>the</b> for rivers and groups: <i>the Ganga, the USA</i>."]),
+ mcq("She is ___ honest girl.",["a","an","the"],1,"“Honest” starts with a silent h, so it sounds like “on-est”. A vowel sound: an."),
+ mcq("I have ___ umbrella.",["a","an","the"],1,"“Umbrella” starts with a vowel sound: an."),
+ mcq("He studies at ___ university in Chennai.",["a","an","the"],0,"“University” starts with a “yoo” sound. That is a consonant sound: a."),
+ mcq("I saw a film yesterday. ___ film was very good.",["A","An","The"],2,"We already spoke about this film, so we say: The film."),
+ mcq("___ sun rises in the east.",["A","The","(no article)"],1,"There is only one sun: the sun."),
+ mcq("We had ___ lunch at one o'clock.",["a","an","(no article)"],2,"Meals do not take an article: breakfast, lunch, dinner.")
+],["<b>a / an</b> = any one. <b>the</b> = one we both know.","<b>an</b> before a vowel <i>sound</i>: an hour, an MBA. <b>a</b> before a consonant sound: a university.","Say <b>the</b> the second time: a dog … the dog.","No article for plurals, general ideas, languages and meals."]),
+
+L("prep","in, on, at","Prepositions of time and place",[
+ learn("Prepositions of time",
+  "Think of a funnel, from small to big. <b>at</b> = exact time. <b>on</b> = days and dates. <b>in</b> = longer periods.",
+  ["table",["Word","Use for","Examples"],["at","clock time, noon, night","at 9 a.m. · at noon · at night"],["on","days and dates","on Monday · on 5 May · on my birthday"],["in","months, years, seasons, parts of the day","in July · in 2026 · in summer · in the morning"]],
+  ["warn","I will meet you in Monday.","I will meet you on Monday.","Days always take “on”."],
+  ["tip","<b>at</b> = a point · <b>on</b> = a day · <b>in</b> = a long time."]),
+ learn("Prepositions of place",
+  ["table",["Word","Use for","Examples"],["in","inside something","in the room · in Madurai · in India"],["on","on a surface","on the table · on the wall · on the bus"],["at","a point or a place","at the door · at the bus stop · at work · at home"]],
+  "More place words: <b>under</b> (below), <b>between</b> (two things), <b>near</b>, <b>behind</b>, <b>in front of</b>, <b>next to</b>.",
+  ["ex","The cat is <hl>under</hl> the table.|below","She sits <hl>between</hl> Ravi and Kumar.|in the middle of two"]),
+ learn("Moving, and fixed pairs",
+  ["ex","I go <hl>to</hl> office <hl>by</hl> bus.|to = direction · by = transport","She came <hl>from</hl> Chennai.|from = the start","Walk <hl>into</hl> the room.|into = going inside"],
+  "Many words always come with one preposition. Learn them as pairs:",
+  ["list","good <b>at</b> · interested <b>in</b> · afraid <b>of</b> · depend <b>on</b>","listen <b>to</b> · wait <b>for</b> · look <b>at</b> · married <b>to</b> · different <b>from</b>"]),
+ mcq("My class starts ___ 9 a.m.",["in","on","at"],2,"Exact clock time: at."),
+ mcq("We have a test ___ Friday.",["in","on","at"],1,"A day: on."),
+ mcq("Her birthday is ___ March.",["in","on","at"],0,"A month: in."),
+ mcq("The keys are ___ the table.",["in","on","at"],1,"On a surface: on."),
+ mcq("I am interested ___ English.",["on","at","in"],2,"Fixed pair: interested in."),
+ mcq("She is good ___ maths.",["at","in","on"],0,"Fixed pair: good at."),
+ type("He waited ___ the bus for twenty minutes. (one word)","for","Fixed pair: wait for.","Think: wait ___ something")
+],["<b>at</b> + clock time. <b>on</b> + day or date. <b>in</b> + month, year, season.","<b>in</b> = inside · <b>on</b> = on a surface · <b>at</b> = a point.","Learn pairs: good at, interested in, afraid of, wait for, listen to."])
+
+]);
+
+MOD("m2","2. Sentence structure","How English sentences are built, from simple to joined.",[
+
+L("svo","Subject, verb, object","The most important rule",[
+ learn("The simplest sentence",
+  "Most English sentences follow one order: <b>Subject → Verb → Object</b>. In Tamil, Hindi and Telugu the verb usually comes last. In English the verb comes <b>in the middle</b>. This is the most important rule.",
+  ["rules",["Order","<sb>Subject</sb> + <vb>Verb</vb> + <ob>Object</ob>"]],
+  ["ex","<sb>Priya</sb> <vb>reads</vb> <ob>books</ob>.|who + does + what","<sb>The students</sb> <vb>wrote</vb> <ob>a test</ob>.|who + does + what"],
+  ["warn","Priya books reads.","Priya reads books.","The verb comes in the middle, after the subject."]),
+ learn("What are they?",
+  ["list","<b>Subject</b> = who or what does the action.","<b>Verb</b> = the action.","<b>Object</b> = who or what receives the action."],
+  "Some verbs need no object: <i>She sleeps. The baby cried.</i>",
+  "Extra information (how, where, when) goes <b>after</b> the object. A simple order is <b>how → where → when</b>.",
+  ["ex","<sb>I</sb> <vb>study</vb> <ob>English</ob> <tm>every evening</tm>.|time goes at the end","<sb>We</sb> <vb>met</vb> <ob>the client</ob> <tm>at the office yesterday</tm>.|place, then time"]),
+ build("The manager sent an email.","Subject, then verb, then object."),
+ build("We study English every evening.","Time goes at the end."),
+ build("Ravi drinks tea in the morning.","Subject, verb, object, then time."),
+ find("Tap the subject.","[The new trainer] teaches grammar.","The subject is who does the action: the new trainer."),
+ find("Tap the object.","Priya wrote [a long report].","The object is what was written: a long report."),
+ mcq("Which order is correct?",["Reads Priya books.","Priya reads books.","Priya books reads."],1,"Subject (Priya) → verb (reads) → object (books)."),
+ sort("What job does each part do?",["Subject","Verb","Object"],[["The trainer",0],["explains",1],["the lesson",2],["Meena",0],["is writing",1],["an email",2]],"Subject = who. Verb = action. Object = what.")
+],["English order: <b>Subject + Verb + Object</b>.","The verb comes in the middle, not at the end.","How, where, when go after the object. Time usually goes last."]),
+
+L("be","The verb be","am, is, are, was, were",[
+ learn("am, is, are",
+  "<b>Be</b> tells who someone is, what something is like, or where it is.",
+  ["table",["Subject","Be","Example"],["I","am","I am a trainer."],["he / she / it","is","She is tired. It is hot."],["we / you / they","are","They are friends."]],
+  "Short forms: I'm, he's, she's, it's, we're, you're, they're. In formal writing, the full forms are safer."),
+ learn("was and were (past)",
+  ["table",["Subject","Be (past)"],["I / he / she / it","was"],["we / you / they","were"]],
+  ["ex","I <vb>was</vb> late yesterday.|past of am","They <vb>were</vb> at home.|past of are"],
+  "<b>Negative:</b> add <b>not</b>: <i>She is not ready.</i> <b>Question:</b> put <b>be</b> first: <i>Is she ready? Where were they?</i>"),
+ learn("The verb must match the subject",
+  ["list","<b>One person or thing</b>: <i>She works. The bus stops.</i>","<b>More than one</b>: <i>They work. The buses stop.</i>","<b>Two subjects joined by and</b> are plural: <i>Ravi and Priya are here.</i>","<b>everyone, everybody, someone, nobody, each</b> are singular: <i>Everyone is ready.</i>","<b>There is / There are</b>: look at the noun after it: <i>There is a pen. There are two pens.</i>"]),
+ mcq("My brother ___ a doctor.",["am","is","are"],1,"“My brother” = he, so: is."),
+ mcq("The students ___ in the classroom.",["is","am","are"],2,"“The students” = they, so: are."),
+ mcq("Everyone ___ ready.",["is","are","am"],0,"“Everyone” is singular: is."),
+ mcq("Ravi and Priya ___ in the same batch.",["is","are","am"],1,"Two people joined by “and”: are."),
+ mcq("There ___ three chairs in the room.",["is","are","am"],1,"Three chairs is plural: There are."),
+ mcq("We ___ late yesterday.",["was","were","are"],1,"“We” + past = were."),
+ mcq("The trainer ___ the topic every day. (explain)",["explain","explains","explaining"],1,"One person (he / she), so add -s: explains.")
+],["I <b>am</b> · he / she / it <b>is</b> · we / you / they <b>are</b>.","Past: I / he / she / it <b>was</b> · we / you / they <b>were</b>.","Negative: be + not. Question: be goes first.","Everyone, everybody, nobody are singular."]),
+
+L("kinds","Kinds of sentences","Statement, question, command, exclamation",[
+ learn("Four kinds",
+  "A <b>sentence</b> has a subject and a verb and gives a complete idea. It starts with a <b>capital letter</b> and ends with a full stop (.), a question mark (?) or an exclamation mark (!).",
+  ["table",["Kind","Job","End","Example"],["Statement","gives information",".","She works in Madurai."],["Question","asks something","?","Do you work here?"],["Command","tells someone to do something",". or !","Open the door, please."],["Exclamation","shows strong feeling","!","What a great day!"]]),
+ learn("Capital letters",
+  "Use a capital letter for:",
+  ["list","the first word of a sentence","the word <b>I</b>","names of people and places: <i>Ravi, Madurai, India</i>","days, months and festivals: <i>Monday, April, Pongal</i>","languages and nationalities: <i>Tamil, English, Indian</i>"]),
+ mcq("What kind of sentence is “Close the window, please.”?",["Statement","Question","Command","Exclamation"],2,"It tells someone to do something: a command."),
+ mcq("“What a beautiful place!” is a ...",["Statement","Question","Command","Exclamation"],3,"It shows strong feeling: an exclamation."),
+ sort("Sort the sentences.",["Statement","Question","Command"],[["Is he ready?",1],["Sit down.",2],["I live in Madurai.",0],["Where do you work?",1],["Please send the file.",2],["She teaches English.",0]],"Questions ask, commands tell, statements give information."),
+ mcq("Which sentence is written correctly?",["my friend lives in chennai","My friend lives in chennai.","My friend lives in Chennai."],2,"Capital letters for the first word and for Chennai, and a full stop at the end."),
+ mcq("Choose the correct end mark: “Do you like tea___”",[".","?","!"],1,"It is a question, so: ?")
+],["Statement (.) · Question (?) · Command (. or !) · Exclamation (!).","Start every sentence with a capital letter.","Capitals for I, names, days, months, languages."]),
+
+L("ques","Making questions","Yes/No and wh- questions",[
+ learn("Yes / No questions",
+  "A question that can be answered with <b>yes</b> or <b>no</b> starts with a <b>helping verb</b>. Flip the subject and the helper.",
+  ["table",["Statement","Question"],["You are ready.","<b>Are</b> you ready?"],["She works here.","<b>Does</b> she work here?"],["They went home.","<b>Did</b> they go home?"],["He can swim.","<b>Can</b> he swim?"]],
+  ["warn","Does she works here?","Does she work here?","After do, does, did we use V1 (the plain verb). The -s and -ed move to the helper."]),
+ learn("Wh- questions",
+  "Put the wh- word first, then make a yes/no question.",
+  ["table",["Word","Asks about","Example"],["What","a thing","What do you do?"],["Who","a person","Who is your trainer?"],["Where","a place","Where does she live?"],["When","a time","When did they come?"],["Why","a reason","Why are you late?"],["How","the way","How do you go to office?"],["Which","a choice","Which bus goes to Madurai?"],["Whose","belonging","Whose bag is this?"],["How many / much","number / amount","How many students are there?"]],
+  ["rules",["Pattern","<tm>Wh-word</tm> + <vb>helper</vb> + <sb>subject</sb> + V1?"]],
+  ["ex","<tm>Where</tm> <vb>do</vb> <sb>you</sb> live?|wh-word, helper, subject, verb"],
+  ["tip","When <b>who</b> or <b>what</b> is the subject, there is no do / does / did: <i>Who teaches you?</i> (not “Who does teach you?”)."]),
+ build("Where do you live?","Wh-word, helper, subject, verb."),
+ build("What time does the class start?","After does, the verb stays plain: start."),
+ build("Did they finish the work?","Did + subject + V1."),
+ mcq("___ she like coffee?",["Do","Does","Is"],1,"“She” takes does."),
+ mcq("Where ___ you go yesterday?",["do","did","were"],1,"Yesterday is past, so: did."),
+ mcq("Choose the correct question.",["Where you live?","Where do you live?","Where you do live?"],1,"Wh-word + helper + subject + verb."),
+ mcq("Which is correct?",["Who does teach you?","Who teaches you?","Who teach you?"],1,"“Who” is the subject, so there is no helper. Add -s for he / she."),
+ match("Match the wh- word to what it asks.",[["Where","a place"],["When","a time"],["Why","a reason"],["Whose","belonging"]],"Learn these four and you can ask most questions.")
+],["Yes/No: <b>helper + subject + V1?</b>","Wh-: <b>wh-word + helper + subject + V1?</b>","After do / does / did use the plain verb.","If who / what is the subject, no helper: Who teaches you?"]),
+
+L("neg","Saying “no”","Negatives",[
+ learn("Making a sentence negative",
+  "Add <b>not</b> after the helping verb. In the present simple and past simple we need <b>do / does / did</b> first.",
+  ["table",["Type","Positive","Negative"],["be","She is ready.","She is not ready. (isn't)"],["present simple","They work.","They do not work. (don't)"],["present simple (he/she/it)","He works.","He does not work. (doesn't)"],["past simple","We went.","We did not go. (didn't)"],["can","I can swim.","I cannot swim. (can't)"],["will","I will go.","I will not go. (won't)"],["have","I have finished.","I have not finished. (haven't)"]],
+  ["warn","He doesn't likes tea.","He doesn't like tea.","The -s is already used in “does”. After doesn't use the plain verb."]),
+ learn("Other negative words",
+  ["list","<b>never</b> = not at any time: <i>I never eat fish.</i> (before the main verb)","<b>no</b> + noun: <i>There is no milk.</i>","<b>nobody, nothing, nowhere</b>: <i>Nobody came.</i>"],
+  ["warn","I don't know nothing.","I don't know anything. (or: I know nothing.)","Use only <b>one</b> negative word in a sentence."]),
+ mcq("She ___ like spicy food.",["don't","doesn't","isn't"],1,"“She” takes doesn't."),
+ mcq("They ___ come to the class yesterday.",["don't","didn't","aren't"],1,"Yesterday is past, so: didn't."),
+ mcq("I ___ seen that film.",["haven't","don't","not"],0,"With seen (V3) we need have / has: haven't."),
+ type("Make it negative. “He plays cricket.” Type the full sentence.",["He doesn't play cricket.","He does not play cricket."],"Does not + plain verb: He doesn't play cricket.","Start with: He doesn't ..."),
+ mcq("Choose the correct sentence.",["I don't have no time.","I don't have any time.","I haven't no time."],1,"Use only one negative word. Use “any” after a negative."),
+ build("She did not go to office yesterday.","Did not + V1."),
+ find("Tap the word that makes it negative.","He [never] eats fish.","“Never” is a negative word. It goes before the main verb.")
+],["Add <b>not</b> after the helper: is not, do not, does not, did not, will not.","After doesn't / didn't use the plain verb.","Only one negative word in a sentence.","<b>never</b> goes before the main verb."]),
+
+L("join","Joining sentences","and, but, so, because, although",[
+ learn("Little words that join",
+  "<b>Conjunctions</b> join words or sentences. Start with these:",
+  ["table",["Word","Job","Example"],["and","adds","I like tea and coffee."],["but","shows a difference","I am tired, but I will finish."],["or","a choice","Do you want tea or coffee?"],["so","result","It rained, so we stayed home."],["because","reason","We stayed home because it rained."],["although","a surprise","Although it rained, we went out."],["when","time","Call me when you reach."],["if","condition","If you study, you will pass."]],
+  ["warn","Because I was ill, so I stayed home.","Because I was ill, I stayed home. (or: I was ill, so I stayed home.)","Use <b>because</b> OR <b>so</b>. Never both in one sentence."]),
+ learn("Simple, compound, complex",
+  ["list","<b>Simple</b>: one idea. <i>I study.</i>","<b>Compound</b>: two ideas joined by and / but / or / so. <i>I study, and she works.</i>","<b>Complex</b>: one main idea and one that depends on it (because, although, when, if). <i>I study because I want a good job.</i>"],
+  ["tip","Put a comma before <b>and, but, so</b> when you join two full sentences. If the <b>because / although / if</b> part comes first, put a comma after it."]),
+ mcq("I like tea, ___ I don't like coffee.",["so","but","because"],1,"A difference: but."),
+ mcq("It was cold, ___ I wore a sweater.",["so","but","although"],0,"A result: so."),
+ mcq("I stayed at home ___ I was sick.",["so","because","but"],1,"A reason: because."),
+ mcq("___ he studied hard, he failed the test.",["Because","Although","So"],1,"A surprise: Although."),
+ mcq("Choose the correct sentence.",["Although he was tired, but he worked.","Although he was tired, he worked.","He was tired, although but he worked."],1,"Use “although” OR “but”, not both."),
+ build("I was tired, so I went to bed early.","Reason first, then the result with so."),
+ sort("What does each word show?",["Reason","Result","Difference"],[["because",0],["so",1],["but",2],["although",2]],"because = reason · so = result · but / although = difference.")
+],["<b>and</b> adds · <b>but</b> and <b>although</b> show a difference · <b>so</b> shows a result · <b>because</b> shows a reason.","Never use because and so together.","Never use although and but together.","Comma before and / but / so between two full sentences."])
+
+]);
+
+}
+
+</script>
+<script>
+with(H){
+
+MOD("m3","3. Helping verbs and modals","Small verbs that make questions, negatives, tenses and polite English.",[
+
+L("help","Helping verbs","be, do, have",[
+ learn("Helping verbs help the main verb",
+  "A <b>helping verb</b> (also called an auxiliary verb) stands in front of the <b>main verb</b>. It does not carry the main meaning. It helps to make tenses, questions and negatives.",
+  ["ex","She <vb>is</vb> <ad>working</ad>.|is = helper · working = main verb","<vb>Do</vb> you <ad>like</ad> tea?|do = helper · like = main verb","They <vb>have</vb> <ad>finished</ad>.|have = helper · finished = main verb"],
+  "<vb>Orange</vb> = helping verb. <ad>Purple</ad> = main verb."),
+ learn("The three big helpers",
+  ["table",["Helper","Forms","It helps to make"],["be","am, is, are, was, were","continuous tenses (is working) and passive"],["do","do, does, did","questions and negatives (Do you know? I don't know.)"],["have","have, has, had","perfect tenses (has finished)"]],
+  "These three can also be <b>main verbs</b>: <i>She has a car. I do my homework. He is a teacher.</i> If there is no other verb, it is the main verb."),
+ reveal("What each helper does","Tap to see an example.",[
+  ["be + V-ing","An action in progress: <i>I am reading.</i>"],
+  ["be + V3","The passive: <i>The mail was sent.</i>"],
+  ["do / does / did","Questions and negatives: <i>Does she know? She did not know.</i>"],
+  ["have / has / had + V3","Perfect tenses: <i>I have finished.</i>"],
+  ["will, can, should ...","Modal verbs. You will learn them in the next lessons."]]),
+ find("Tap the helping verb.","She [is] cooking dinner.","“Is” helps the main verb “cooking”."),
+ find("Tap the helping verb.","They [have] already left.","“Have” helps the main verb “left”."),
+ find("Tap the helping verb.","[Did] you call him?","“Did” helps the main verb “call”."),
+ mcq("In “He has a car.” the word “has” is ...",["a helping verb","the main verb"],1,"There is no other verb. “Has” means “owns”, so it is the main verb."),
+ mcq("In “He has finished.” the word “has” is ...",["a helping verb","the main verb"],0,"The main verb is “finished”. “Has” helps it."),
+ mcq("She ___ working now.",["do","is","has"],1,"Working = V-ing, so we need be: is."),
+ mcq("___ you know the answer?",["Do","Are","Have"],0,"Present simple question: Do you know ...?")
+],["Helping verbs: <b>be, do, have</b> and the modals.","<b>be</b> + V-ing = continuous · <b>have</b> + V3 = perfect · <b>do / does / did</b> = questions and negatives.","If there is no other verb, be / do / have is the main verb."]),
+
+L("modal1","Modal verbs: can and could","Ability, permission, requests",[
+ learn("What are modal verbs?",
+  "<b>Modal verbs</b> are special helping verbs. They add a feeling to the sentence: ability, permission, advice, possibility or duty.",
+  ["list","The modals: <b>can, could, may, might, will, would, shall, should, must</b>."],
+  "Three golden rules. They are always the same:",
+  ["rules",["Rule 1","he / she / it takes <b>no -s</b>: <i>She can swim.</i>"],["Rule 2","Use the <b>plain verb</b> (V1) after a modal: <i>She can swim.</i>"],["Rule 3","Question: modal first. Negative: add not. <i>Can she swim? She cannot swim.</i>"]],
+  ["warn","She can swims.","She can swim.","After a modal, the verb stays plain. No -s, no -ed, no to."],
+  ["warn","He can to drive.","He can drive.","Do not put “to” after can."]),
+ learn("can: ability, permission, request",
+  ["table",["Use","Example"],["ability","I can type fast."],["permission (friendly)","Can I open the window?"],["request","Can you help me?"],["possibility","It can get very hot in May."]],
+  "<b>can't / cannot</b> = not able, or not allowed. <b>could</b> = past ability (<i>I could swim when I was six</i>) and a more polite request (<i>Could you help me, please?</i>)."),
+ mcq("She ___ speak three languages.",["can","cans","can to"],0,"Modal + plain verb. No -s, no to."),
+ mcq("When I was a child, I ___ climb trees.",["can","could","will"],1,"Past ability: could."),
+ mcq("Which request is more polite?",["Can you open the door?","Could you open the door, please?"],1,"“Could” is more polite than “can”."),
+ mcq("He ___ drive a car. He is only ten.",["can","can't","could"],1,"He is ten, so he is not able: can't."),
+ mcq("Choose the correct sentence.",["Can she sings?","Can she sing?","Can she to sing?"],1,"Can + subject + plain verb."),
+ type("Make a question: “You can help me.” → ___ you help me?","Can","The modal goes first: Can you help me?"),
+ build("Could you send me the file?","Modal first, then the subject, then the plain verb.")
+],["Modals: no -s, then <b>plain verb</b>, no to.","<b>can</b> = ability, permission. <b>could</b> = past ability, polite request.","Question: modal first. Negative: modal + not."]),
+
+L("modal2","will, would and shall","Future, polite offers and requests",[
+ learn("will",
+  "<b>will</b> is used for the future: decisions made now, promises, offers and predictions. (You will learn it again in the tenses.)",
+  ["ex","I <vb>will</vb> call you tomorrow.|promise","It <vb>will</vb> rain today.|prediction","<vb>Will</vb> you help me?|request"],
+  "Short form: I'll, she'll. Negative: <b>won't</b> (= will not)."),
+ learn("would: polite and imagined",
+  ["list","Polite offer: <i>Would you like some tea?</i>","Polite request: <i>Would you please close the door?</i>","Imagined situation: <i>If I had time, I would learn French.</i>","Past habit: <i>When I was a child, we would play outside every evening.</i>"],
+  ["tip","<b>Would you like ...?</b> is more polite than <b>Do you want ...?</b>"]),
+ learn("shall",
+  "<b>shall</b> is used with <b>I</b> and <b>we</b> to make an offer or a suggestion: <i>Shall I open the window? Shall we start?</i>",
+  "In daily English, many people use <i>Let's</i> or <i>Should we</i> instead. You mainly need shall in these two question forms."),
+ mcq("The phone is ringing. I ___ answer it.",["will","would","shall"],0,"A quick decision made now: will."),
+ mcq("___ you like some tea? (polite offer)",["Do","Would","Will"],1,"“Would you like” is the polite way to offer."),
+ mcq("It's hot here. ___ I open the window? (offer)",["Shall","Would","Must"],0,"“Shall I ...?” offers to do something."),
+ mcq("I promise I ___ be late again.",["won't","wouldn't","shan't"],0,"A promise about the future: won't."),
+ mcq("Which is the most polite?",["Give me water.","Will you give me water?","Would you please give me some water?"],2,"“Would you please ...” is the most polite."),
+ mcq("Which one is correct?",["She wills come tomorrow.","She will come tomorrow.","She will comes tomorrow."],1,"will + plain verb. Never add -s to will.")
+],["<b>will</b> = decision now, promise, prediction. Negative: <b>won't</b>.","<b>Would you like ...?</b> = polite offer. <b>Would you please ...?</b> = polite request.","<b>Shall I / Shall we ...?</b> = offer or suggestion."]),
+
+L("modal3","may and might","Possibility and polite permission",[
+ learn("may and might: maybe",
+  "<b>may</b> and <b>might</b> talk about <b>possibility</b>. It is possible, but we are not sure.",
+  ["ex","It <vb>may</vb> rain this evening.|maybe it will","He <vb>might</vb> be late.|maybe, we are less sure"],
+  "Both mean “maybe”. <b>might</b> is a little less sure than <b>may</b>. In daily English they are used almost the same.",
+  ["warn","He may be comes.","He may come.","Modal + plain verb. Never -s or -ed."]),
+ learn("may: polite permission",
+  "<b>May I ...?</b> is a polite way to ask for permission: <i>May I come in? May I use your pen?</i> Answers: <i>Yes, you may. / I'm sorry, you may not.</i>",
+  ["table",["Ask like this","How polite?"],["Can I use your pen?","friendly"],["Could I use your pen?","polite"],["May I use your pen?","very polite, formal"]],
+  ["tip","<i>He may come</i> = maybe he will come. <i>He can come</i> = he is able or allowed to come."]),
+ mcq("Take an umbrella. It ___ rain later.",["may","can","must"],0,"Possible, not sure: may."),
+ mcq("___ I come in, sir? (very polite)",["May","Will","Do"],0,"“May I ...?” is the polite way to ask permission."),
+ mcq("Meena is not in class. She ___ be sick. (maybe)",["might","shall","would"],0,"Maybe: might."),
+ mcq("Which sentence means “maybe”?",["He may come.","He must come.","He shall come."],0,"May = maybe."),
+ mcq("Choose the correct sentence.",["She might to go.","She might goes.","She might go."],2,"Modal + plain verb."),
+ build("May I use your phone?","Modal first for a question.")
+],["<b>may / might</b> = maybe. Modal + plain verb.","<b>May I ...?</b> = very polite permission.","Politeness: can (friendly) → could (polite) → may (formal)."]),
+
+L("modal4","should, must, have to","Advice and duty",[
+ learn("should: advice",
+  "Use <b>should</b> to give advice, or to say what is a good idea.",
+  ["ex","You <vb>should</vb> drink more water.|advice","You <vb>shouldn't</vb> skip breakfast.|negative advice","<vb>Should</vb> I take this job?|asking for advice"],
+  "<b>ought to</b> means the same: <i>You ought to see a doctor.</i> <b>had better</b> is strong advice with a warning: <i>You had better hurry, or you will miss the train.</i>"),
+ learn("must and have to: duty",
+  "<b>must</b> = a strong duty that the speaker feels. <b>have to</b> = a duty from outside, like a rule or a schedule.",
+  ["ex","I <vb>must</vb> finish this today.|I feel it is very important","You <vb>must</vb> wear an ID card.|a rule at the office","She <vb>has to</vb> wake up at 5 a.m.|her schedule makes her"],
+  "<b>have to</b> changes with the subject: I have to, she has to, they had to (past). <b>must</b> has no past form. Use <b>had to</b>: <i>Yesterday I had to work late.</i>"),
+ learn("Careful: mustn't or don't have to?",
+  ["table",["Phrase","Meaning","Example"],["mustn't","it is forbidden: do NOT","You mustn't use your phone in the exam."],["don't have to","it is not necessary (you may, if you like)","You don't have to come on Sunday."]],
+  ["tip","<b>mustn't</b> = don't do it! <b>don't have to</b> = there is no need."]),
+ mcq("I have a headache. I think I ___ rest.",["should","mustn't","can"],0,"Giving advice: should."),
+ mcq("You ___ smoke here. It is forbidden.",["mustn't","don't have to","shouldn't to"],0,"Forbidden: mustn't."),
+ mcq("It is a holiday tomorrow. We ___ come to office.",["mustn't","don't have to","must"],1,"No need to come: don't have to."),
+ mcq("Yesterday I ___ stay late to finish the report.",["must","had to","should"],1,"Past duty: had to. Must has no past."),
+ mcq("She ___ get up early. Her class starts at 7.",["has to","have to","must to"],0,"She + schedule: has to."),
+ mcq("Choose the correct sentence.",["He should goes now.","He should go now.","He should to go now."],1,"Modal + plain verb."),
+ match("Match the word to its meaning.",[["should","a good idea"],["must","strong duty"],["mustn't","forbidden"],["don't have to","not necessary"]],"These four are the most confused pairs. Learn them well.")
+],["<b>should / ought to</b> = advice.","<b>must</b> = strong duty. <b>have to</b> = rule or schedule. Past of both: <b>had to</b>.","<b>mustn't</b> = forbidden. <b>don't have to</b> = not necessary."]),
+
+L("modal5","Modals in questions and the past","should have, could have, must have",[
+ learn("Questions and negatives with modals",
+  "<b>Modals never need do / does / did.</b> For a question, put the modal first. For a negative, add <b>not</b>.",
+  ["table",["Statement","Question","Negative"],["She can swim.","Can she swim?","She can't swim."],["They should go.","Should they go?","They shouldn't go."],["You will come.","Will you come?","You won't come."],["He must leave.","Must he leave?","He mustn't leave."]],
+  "Short answers: <i>Can she swim? Yes, she can. / No, she can't.</i>"),
+ learn("Modals for the past",
+  "To talk about the past, use <b>modal + have + V3</b>.",
+  ["table",["Pattern","Meaning","Example"],["should have + V3","a good idea, but it did not happen","You should have called me."],["could have + V3","it was possible, but it did not happen","I could have gone, but I was busy."],["might have + V3","maybe it happened","She might have missed the bus."],["must have + V3","I am sure it happened","He must have forgotten."]],
+  ["tip","<b>should have</b> = regret or blame. <b>must have</b> = a clever guess that you are almost sure about."]),
+ mcq("Make a question: She can drive.",["Does she can drive?","Can she drive?","Can she drives?"],1,"Modal first. No does."),
+ mcq("I'm sorry I was late. I ___ left earlier.",["should have","should","must"],0,"A past regret: should have + V3."),
+ mcq("The lights are off. They ___ gone home.",["must have","must","should"],0,"A guess about the past: must have + V3."),
+ mcq("He failed the test. He ___ studied more.",["should have","must","will"],0,"A past regret: should have + V3."),
+ mcq("Choose the correct sentence.",["She should have came.","She should have come.","She should has come."],1,"Modal + have + V3. The V3 of come is come."),
+ mcq("I'm not sure, but she ___ be in the library. (maybe)",["might","should have","has to"],0,"Maybe (now): might + plain verb.")
+],["Modal question: <b>modal + subject + V1?</b> No do / does.","Past modals: <b>should / could / might / must + have + V3</b>.","<b>should have</b> = regret. <b>must have</b> = sure guess."])
+
+]);
+
+}
+
+</script>
+<script>
+with(H){
+
+MOD("m4","4. Tenses","All the tenses, one by one, with timelines, patterns and practice.",[
+
+L("tmap","The tense map","How all tenses fit together",[
+ learn("Tenses tell us WHEN",
+  "A <b>tense</b> shows <b>when</b> something happens: in the past, now or in the future. It also shows <b>how</b>: simple, continuous (in progress), perfect (before or connected to another time), or perfect continuous (a long action).",
+  ["table",["","Past","Present","Future"],["<b>Simple</b>","I worked","I work","I will work"],["<b>Continuous</b>","I was working","I am working","I will be working"],["<b>Perfect</b>","I had worked","I have worked","I will have worked"],["<b>Perfect continuous</b>","I had been working","I have been working","I will have been working"]],
+  "That is <b>12 tenses</b>. You will also learn <b>going to</b> for plans. Do not worry. We learn them one by one."),
+ learn("See them on a timeline",
+  "The black line is <b>NOW</b>. The coloured mark shows when the action happens.",
+  ["p","<b>Past simple</b>: finished at a past time."],["tl",20,20,"I worked yesterday."],
+  ["p","<b>Present continuous</b>: happening around now."],["tl",42,58,"I am working now."],
+  ["p","<b>Present perfect continuous</b>: started before, continues until now."],["tl",18,50,"I have been working for two hours."],
+  ["p","<b>Future simple</b>: later."],["tl",82,82,"I will work tomorrow."]),
+ learn("Choose a tense in 3 questions",
+  ["list","<b>1. When?</b> Past, now or later?","<b>2. What kind of action?</b> A habit or fact (simple)? In progress (continuous)? Finished before another time, or connected to now (perfect)? A long action (perfect continuous)?","<b>3. Look for signal words</b>: yesterday, now, since, for, already, tomorrow, by the time ..."],
+  ["tip","Each tense has its own lesson. Do them in order and keep the notes open."]),
+ match("Match the tense to its sentence.",[["Past simple","I worked."],["Present continuous","I am working."],["Present perfect","I have worked."],["Future simple","I will work."]],"Look at the helper: no helper (V2), am + -ing, have + V3, will + V1."),
+ mcq("Which sentence is about the future?",["She works.","She worked.","She will work."],2,"will + verb = future."),
+ mcq("“I am eating.” is ...",["Present simple","Present continuous","Past continuous"],1,"am + V-ing = present continuous."),
+ sort("Past, present or future?",["Past","Present","Future"],[["He teaches.",1],["He taught.",0],["He will teach.",2],["He is teaching.",1],["He was teaching.",0],["He will be teaching.",2]],"Look at the helper: was = past, is = present, will = future.")
+],["Tense = <b>when</b> (past, present, future) + <b>how</b> (simple, continuous, perfect, perfect continuous).","Simple = facts and finished actions. Continuous = in progress. Perfect = before or connected to another time.","Ask: When? What kind of action? Which signal words?"]),
+
+L("ps","Present Simple","Habits and facts",[
+ learn("Present Simple: habits and facts",
+  "Use the <b>Present Simple</b> for things that are <b>always true</b> or that you do <b>again and again</b>.",
+  ["ex","I <vb>drink</vb> tea every morning.|habit","The sun <vb>rises</vb> in the east.|fact","The class <vb>starts</vb> at 9 a.m.|timetable"],
+  ["tl",8,92,"Again and again: past, now and future."],
+  ["tip","Same every day? Use <b>Present Simple</b>."]),
+ learn("Making the Present Simple",
+  ["rules",["Positive","<sb>I / you / we / they</sb> + <vb>V1</vb> <i>They work.</i>"],["Positive","<sb>he / she / it</sb> + <vb>V1 + s</vb> <i>She works.</i>"],["Negative","<sb>S</sb> + <vb>do not / does not</vb> + V1 <i>She doesn't work.</i>"],["Question","<vb>Do / Does</vb> + <sb>S</sb> + V1? <i>Does she work?</i>"]],
+  "Spelling of -s: watch → watches · study → studies · go → goes · have → has.",
+  ["warn","She don't like tea.","She doesn't like tea.","He / she / it takes doesn't, not don't."],
+  ["warn","Does she likes tea?","Does she like tea?","After does, use V1. The -s is already in “does”."],
+  "With <b>be</b> there is no do / does: <i>She is a trainer. She isn't a trainer. Is she a trainer?</i>"),
+ learn("Signal words",
+  ["list","<b>How often</b>: always, usually, often, sometimes, rarely, never","<b>Time</b>: every day, every week, on Mondays, in the morning, once a week","<b>Position</b>: frequency words go <b>before</b> the main verb (<i>I always drink tea</i>) but <b>after</b> be (<i>She is always happy</i>)."]),
+ mcq("My brother ___ in a bank.",["work","works","is working"],1,"A fact about his job, and “brother” = he. Add -s: works."),
+ mcq("They ___ football on Sundays.",["plays","play","are playing"],1,"“On Sundays” = a habit. They + V1: play."),
+ mcq("She ___ coffee. She only drinks tea.",["don't drink","doesn't drink","doesn't drinks"],1,"She + negative = doesn't + V1."),
+ mcq("___ your sister live in Chennai?",["Do","Does","Is"],1,"Your sister = she, so: Does."),
+ type("He ___ to office by bus. (go)","goes","Ends in o: add -es. He goes."),
+ type("She ___ at night. (study)","studies","Consonant + y: change y to -ies."),
+ build("Does she work in a bank?","Does + subject + V1."),
+ build("My father never eats fish.","“Never” goes before the main verb."),
+ find("Tap the verb.","The train [leaves] at six every day.","A timetable uses the Present Simple."),
+ sort("Habit or happening NOW?",["Habit (Present Simple)","Now (Present Continuous)"],[["I drink tea every day.",0],["I am drinking tea now.",1],["He plays cricket on Sundays.",0],["Look! It is raining.",1],["Water boils at 100°C.",0]],"“Every day” and facts are Present Simple. “Now” and “Look!” are Present Continuous.")
+],["<b>Present Simple</b> = habits, facts, timetables.","he / she / it + <b>V1 + s</b>. Negative: <b>do not / does not</b> + V1. Question: <b>Do / Does</b> + S + V1?","After does, use V1 (no -s).","Signal words: always, usually, often, never, every day."]),
+
+L("pc","Present Continuous","Happening now",[
+ learn("Present Continuous: happening now",
+  "Use the <b>Present Continuous</b> for actions that are <b>in progress now</b>, actions around now (temporary), and <b>fixed plans</b> for the near future.",
+  ["ex","Be quiet! The trainer <vb>is explaining</vb> the lesson.|right now","I <vb>am learning</vb> Python these days.|temporary, around now","We <vb>are meeting</vb> the client tomorrow.|a fixed plan"],
+  ["tl",42,58,"The action is in progress at this moment."],
+  ["tip","Is the camera <b>ON</b> right now? Use Present Continuous."]),
+ learn("Making the Present Continuous",
+  ["rules",["Positive","<sb>S</sb> + <vb>am / is / are</vb> + <ad>V-ing</ad> <i>She is working.</i>"],["Negative","<sb>S</sb> + <vb>am / is / are not</vb> + <ad>V-ing</ad> <i>She isn't working.</i>"],["Question","<vb>Am / Is / Are</vb> + <sb>S</sb> + <ad>V-ing</ad>? <i>Is she working?</i>"]],
+  "<b>I am</b> · <b>he / she / it is</b> · <b>we / you / they are</b>.",
+  "Spelling of -ing: write → writing · run → running · study → studying · lie → lying."),
+ learn("Signal words, and verbs that do not take -ing",
+  ["list","<b>Signal words</b>: now, right now, at the moment, today, these days, currently, Look! Listen!"],
+  "<b>State verbs</b> are not used in the continuous: <i>know, like, love, want, need, understand, believe, hear, see (with eyes)</i>.",
+  ["warn","I am knowing the answer.","I know the answer.","Know is a state, not an action in progress."],
+  ["warn","I am having a car.","I have a car.","“Have” meaning “own” is a state verb. But <i>I am having lunch</i> is correct, because it is an action."]),
+ mcq("Shh! The baby ___.",["sleeps","is sleeping","sleep"],1,"“Shh!” = now. Use am / is / are + -ing."),
+ mcq("They ___ for the exam these days.",["are preparing","prepares","prepare"],0,"“These days” = temporary. They are + -ing."),
+ mcq("I ___ working today. I am on leave.",["am not","don't","isn't"],0,"I + continuous negative: am not."),
+ mcq("___ you listening to me?",["Do","Are","Is"],1,"Listening has -ing, so use are. You + are."),
+ mcq("I ___ the answer.",["know","am knowing","knows"],0,"Know is a state verb. Use the Present Simple."),
+ type("She is ___ an email. (write)","writing","Drop the silent e, then add -ing: writing."),
+ type("He is ___ on the chair. (sit)","sitting","Short vowel + one consonant: double the t. Sitting."),
+ build("They are not watching TV now.","Subject + are not + -ing."),
+ build("What are you doing right now?","Wh-word + are + subject + -ing."),
+ find("Tap the verb phrase (helper + -ing word).","The students [are writing] a test now.","Are + writing = Present Continuous."),
+ sort("Present Simple or Present Continuous?",["Present Simple","Present Continuous"],[["She works every day.",0],["She is working now.",1],["I am reading a book at the moment.",1],["I read every night.",0],["Look! It is snowing.",1],["Water freezes at 0°C.",0]],"Habits and facts = simple. Now and at the moment = continuous.")
+],["<b>Present Continuous</b> = happening now, temporary, fixed plans.","<b>am / is / are + V-ing</b>.","Signal words: now, at the moment, these days, Look!","State verbs (know, like, want, need) do not take -ing."]),
+
+L("pp","Present Perfect","The past that touches now",[
+ learn("Present Perfect: the past that touches now",
+  "The <b>Present Perfect</b> talks about the past, but it is <b>connected to now</b>. We do <b>not</b> say when it happened.",
+  ["ex","I <vb>have visited</vb> Madurai Meenakshi Temple.|life experience","I <vb>have lost</vb> my phone. I can't call you.|result now","She <vb>has worked</vb> here for two years.|started in the past, still true"],
+  ["tl",18,50,"The action starts in the past and reaches NOW."],
+  ["tip","<b>No finished time!</b> If you can say yesterday, last week or in 2019, use the Past Simple, not the Present Perfect."]),
+ learn("Making the Present Perfect",
+  ["rules",["Positive","<sb>S</sb> + <vb>have / has</vb> + <ad>V3</ad> <i>I have finished.</i>"],["Negative","<sb>S</sb> + <vb>have / has not</vb> + <ad>V3</ad> <i>She hasn't finished.</i>"],["Question","<vb>Have / Has</vb> + <sb>S</sb> + <ad>V3</ad>? <i>Have you finished?</i>"]],
+  "<b>he / she / it</b> takes <b>has</b>. Everyone else takes <b>have</b>.",
+  ["warn","I have went to Chennai.","I have gone to Chennai.","After have / has use V3 (gone), not V2 (went)."],
+  ["table",["been","gone"],["He <b>has been to</b> Delhi. (He went and came back.)","He <b>has gone to</b> Delhi. (He is there now.)"]]),
+ learn("Signal words: for, since, ever, never, yet, already, just",
+  ["table",["Word","Meaning","Example"],["for","how long","for two years"],["since","the starting point","since 2022 · since Monday"],["ever / never","in your life so far","Have you ever ...? I have never ..."],["already","sooner than expected","I have already eaten."],["yet","until now (negatives and questions)","I haven't finished yet."],["just","a very short time ago","She has just left."]],
+  ["warn","I have seen him yesterday.","I saw him yesterday.","“Yesterday” is a finished time, so use the Past Simple."]),
+ mcq("I ___ here since 2022.",["work","have worked","am working"],1,"“Since 2022” starts in the past and continues now: Present Perfect."),
+ mcq("She has lived in Madurai ___ ten years.",["since","for","from"],1,"A length of time: for."),
+ mcq("She has lived in Madurai ___ 2015.",["since","for","from"],0,"A starting point: since."),
+ mcq("___ you ever visited Chennai?",["Did","Have","Do"],1,"“Ever” = life experience. Have + you + V3."),
+ mcq("He ___ the report yet.",["hasn't finished","didn't finished","doesn't finish"],0,"“Yet” goes with Present Perfect. He + hasn't + V3."),
+ mcq("Which sentence is correct?",["I have seen him yesterday.","I saw him yesterday.","I have saw him yesterday."],1,"“Yesterday” needs the Past Simple."),
+ type("Kumar has ___ the test twice. (take)","taken","take → took → taken. Use V3 after has.","Third form of take"),
+ type("They have already ___ home. (go)","gone","go → went → gone. Use V3 after have.","Third form of go"),
+ build("Have you finished the report yet?","Have + subject + V3."),
+ build("I have never eaten sushi.","Never goes between have and V3."),
+ sort("Present Perfect or Past Simple?",["Present Perfect","Past Simple"],[["I have visited Delhi.",0],["I visited Delhi in 2019.",1],["She has just left.",0],["She left an hour ago.",1],["We have known him for years.",0],["We met him last year.",1]],"A finished time (in 2019, an hour ago, last year) means Past Simple.")
+],["<b>Present Perfect</b> = past connected to now. No finished time.","<b>have / has + V3</b>. He / she / it takes <b>has</b>.","<b>for</b> + length · <b>since</b> + starting point.","ever, never, already, yet, just = Present Perfect words.","yesterday, last week, ago, in 2019 = Past Simple."]),
+
+L("ppc","Present Perfect Continuous","Still going, and for how long",[
+ learn("Present Perfect Continuous: how long?",
+  "Use it for an action that <b>started in the past and is still going</b>, when you want to show <b>how long</b>. Also for an action that just stopped, when you can see the result.",
+  ["ex","I <vb>have been waiting</vb> for 30 minutes.|still waiting","She <vb>has been crying</vb>. Her eyes are red.|just stopped, you see the result","They <vb>have been playing</vb> since 4 p.m.|still playing"],
+  ["tl",18,50,"A tap opened in the past that is still running."],
+  ["tip","Still running? <b>have been + -ing</b>. It answers “How long?”"]),
+ learn("Making it",
+  ["rules",["Positive","<sb>S</sb> + <vb>have / has been</vb> + <ad>V-ing</ad> <i>I have been waiting.</i>"],["Negative","<sb>S</sb> + <vb>have / has not been</vb> + <ad>V-ing</ad> <i>I haven't been waiting.</i>"],["Question","<vb>Have / Has</vb> + <sb>S</sb> + <vb>been</vb> + <ad>V-ing</ad>? <i>Have you been waiting?</i>"]],
+  "Compare:",
+  ["ex","I <vb>have read</vb> three books.|Present Perfect: how many, the result","I <vb>have been reading</vb> all day.|Present Perfect Continuous: how long"]),
+ learn("Signal words and warnings",
+  ["list","<b>Signal words</b>: for, since, how long, all day, lately, recently"],
+  ["warn","I am waiting since morning.","I have been waiting since morning.","“Since” and “for” with a period of time need a perfect tense."],
+  "State verbs do not take the continuous: <i>I have known him for years</i> (not “been knowing”)."),
+ mcq("I ___ for the Versant test for two months.",["prepare","am preparing","have been preparing"],2,"“For two months” + still going: have been + -ing."),
+ mcq("How long ___ you been waiting?",["have","are","did"],0,"“Been waiting” needs have / has before it."),
+ mcq("It ___ since morning.",["is raining","has been raining","rains"],1,"“Since morning” + still going: has been + -ing."),
+ mcq("She has been ___ since 9 a.m.",["work","works","working"],2,"After been we use V-ing: working."),
+ mcq("Choose the correct sentence.",["He is working here since 2020.","He has been working here since 2020.","He works here since 2020."],1,"“Since 2020” needs a perfect tense."),
+ type("We have been ___ English for a year. (learn)","learning","have been + V-ing: learning."),
+ build("How long have they been waiting?","Wh-word + have + subject + been + -ing."),
+ build("She has not been sleeping well.","has not been + -ing."),
+ find("Tap the verb phrase.","Ravi [has been working] on this project since January.","has been + working = Present Perfect Continuous."),
+ mcq("Which sentence stresses HOW LONG? “I have read three books.” or “I have been reading all day.”",["The first one","The second one"],1,"The continuous form with “all day” shows how long.")
+],["<b>have / has been + V-ing</b> = started before, still going, how long.","Use <b>for</b> (length) and <b>since</b> (start point).","State verbs (know, like) do not take the continuous.","Present Perfect = result or number. Perfect Continuous = how long."]),
+
+L("pas","Past Simple","Finished past",[
+ learn("Past Simple: finished past",
+  "Use the <b>Past Simple</b> for actions that <b>finished</b> at a <b>finished time</b>.",
+  ["ex","We <vb>watched</vb> a movie yesterday.|finished time","He <vb>woke</vb> up, <vb>had</vb> tea and <vb>left</vb> for work.|one action after another","When I was young, I <vb>played</vb> cricket every day.|past habit"],
+  ["tl",20,20,"Done at a finished time in the past."],
+  ["tip","Finished time word (yesterday, last week, ago, in 2019)? Use <b>Past Simple</b>."]),
+ learn("Making the Past Simple",
+  ["rules",["Positive","<sb>S</sb> + <vb>V2</vb> <i>I worked. I went.</i>"],["Negative","<sb>S</sb> + <vb>did not</vb> + V1 <i>I didn't go.</i>"],["Question","<vb>Did</vb> + <sb>S</sb> + V1? <i>Did you go?</i>"]],
+  "<b>be</b> in the past: <i>I was, you were, he was, we were.</i>",
+  ["warn","Did you went there?","Did you go there?","After did, use V1. The past is already shown by “did”."],
+  ["warn","I didn't saw him.","I didn't see him.","After didn't, use V1."],
+  ["tip","How -ed sounds: <b>worked</b> = /t/ · <b>played</b> = /d/ · <b>wanted</b> = /id/."]),
+ learn("Common irregular verbs",
+  ["table",["V1","V2","V1","V2"],["go","went","buy","bought"],["see","saw","eat","ate"],["come","came","write","wrote"],["take","took","speak","spoke"],["make","made","tell","told"],["get","got","think","thought"],["give","gave","leave","left"],["have","had","meet","met"],["do","did","say","said"]],
+  "Say three of these aloud every day. Soon they feel natural."),
+ mcq("Last Sunday we ___ a movie.",["watch","watched","have watched"],1,"“Last Sunday” is a finished time: Past Simple."),
+ mcq("She ___ to Chennai in 2019.",["moved","has moved","moves"],0,"“In 2019” is a finished time."),
+ mcq("I ___ the meeting because I was sick.",["didn't attend","don't attend","didn't attended"],0,"Past negative: didn't + V1."),
+ mcq("___ you finish the work last night?",["Do","Did","Have"],1,"“Last night” is past. Did + you + V1."),
+ type("She ___ a new phone last week. (buy)","bought","buy → bought (irregular)."),
+ type("We ___ lunch at one o'clock. (eat)","ate","eat → ate (irregular)."),
+ match("Match V1 with V2.",[["go","went"],["see","saw"],["take","took"],["make","made"]],"All four are irregular."),
+ build("Did you see the manager yesterday?","Did + subject + V1."),
+ build("He did not come to the class.","did not + V1."),
+ find("Tap the past verbs.","Ravi [woke] up, [had] tea and [left] for work.","woke, had and left are V2 (past) forms.")
+],["<b>Past Simple</b> = finished action at a finished time.","Positive: <b>V2</b>. Negative: <b>did not + V1</b>. Question: <b>Did + S + V1?</b>","After did / didn't use V1.","Signal words: yesterday, last week, ago, in 2019, when I was young."]),
+
+L("pasc","Past Continuous","In progress in the past",[
+ learn("Past Continuous: in progress in the past",
+  "Use the <b>Past Continuous</b> for an action that was <b>in progress</b> at a moment in the past, or that was <b>interrupted</b> by a shorter action.",
+  ["ex","At 8 p.m. yesterday, I <vb>was studying</vb>.|in progress at that moment","I <vb>was walking</vb> home when I <vb>met</vb> my friend.|long action + short action","While she <vb>was cooking</vb>, he <vb>was watching</vb> TV.|two actions together"],
+  ["tl",22,38,"The action was running at that past time."],
+  ["tip","Think of a <b>film</b> and a <b>photo</b>. The film is running: <i>was walking</i>. The photo is one click: <i>met</i>."]),
+ learn("Making the Past Continuous",
+  ["rules",["Positive","<sb>S</sb> + <vb>was / were</vb> + <ad>V-ing</ad> <i>I was working.</i>"],["Negative","<sb>S</sb> + <vb>was / were not</vb> + <ad>V-ing</ad> <i>They weren't working.</i>"],["Question","<vb>Was / Were</vb> + <sb>S</sb> + <ad>V-ing</ad>? <i>Were you working?</i>"]],
+  "<b>I / he / she / it</b> was · <b>we / you / they</b> were.",
+  ["warn","They was playing cricket.","They were playing cricket.","“They” always takes were."],
+  ["list","<b>Signal words</b>: while, when, as, at 8 p.m. yesterday, all evening.","<b>while</b> + a long action. <b>when</b> + a short action: <i>I was cooking when the power went off.</i>"]),
+ mcq("At 8 p.m. yesterday, I ___ my presentation.",["prepared","was preparing","am preparing"],1,"One moment in the past, and the action was in progress."),
+ mcq("The students ___ when the trainer walked in.",["talked","was talking","were talking"],2,"Long action, so Past Continuous. Students = they: were."),
+ mcq("I ___ home when I met my old friend.",["was walking","walked","am walking"],0,"Long action (walking) + short action (met)."),
+ mcq("While she ___ the report, he was making tea.",["wrote","was writing","writes"],1,"“While” + a long action."),
+ mcq("What ___ you doing at 10 last night?",["were","was","did"],0,"You + past continuous: were."),
+ type("It was ___ heavily when we left. (rain)","raining","was + V-ing: raining."),
+ build("They were not sleeping at ten.","were not + -ing."),
+ build("What were you doing at nine?","Wh-word + were + subject + -ing."),
+ find("Tap the verb phrase for the long action.","I [was cooking] when the power went off.","was + cooking = the long action in progress."),
+ sort("Which action was long, and which was short?",["Long (was / were + -ing)","Short (Past Simple)"],[["was sleeping",0],["rang (the phone)",1],["were talking",0],["walked in",1]],"The long action is the film. The short action is the photo.")
+],["<b>Past Continuous</b> = in progress at a moment in the past.","<b>was / were + V-ing</b>.","Film = was / were + -ing. Photo = Past Simple.","while + long action. when + short action."]),
+
+L("pap","Past Perfect","The earlier past",[
+ learn("Past Perfect: the earlier past",
+  "Use the <b>Past Perfect</b> when <b>two things happened in the past</b>. The one that happened <b>first</b> gets <b>had + V3</b>.",
+  ["ex","When we reached the station, the train <vb>had left</vb>.|the train left first","She <vb>had finished</vb> the report before the manager asked for it.|she finished first","I could not enter because I <vb>had left</vb> my ID at home.|leaving came first"],
+  ["tl2",22,"train left",40,"we reached"],
+  ["tip","It is the <b>past of the past</b>. The action that happened <b>first</b> gets <b>had + V3</b>."]),
+ learn("Making the Past Perfect",
+  ["rules",["Positive","<sb>S</sb> + <vb>had</vb> + <ad>V3</ad> <i>She had left.</i>"],["Negative","<sb>S</sb> + <vb>had not</vb> + <ad>V3</ad> <i>She hadn't left.</i>"],["Question","<vb>Had</vb> + <sb>S</sb> + <ad>V3</ad>? <i>Had she left?</i>"]],
+  "<b>had</b> is the same for every subject.",
+  ["warn","I had went home before he came.","I had gone home before he came.","After had, use V3 (gone), not V2 (went)."],
+  ["list","<b>Signal words</b>: before, after, by the time, already, just, until, when.","Use it only when there are <b>two past actions</b> or a past time to compare. One action alone is the Past Simple."]),
+ mcq("When we reached the station, the train ___.",["left","had left","was leaving"],1,"The train left first, so: had left."),
+ mcq("She ___ the report before the manager asked for it.",["finished","has finished","had finished"],2,"She finished first, then the manager asked: had finished."),
+ mcq("The teacher was angry because the students ___ their homework.",["hadn't done","haven't done","hasn't done"],0,"Not doing homework came first, in the past: hadn't + V3."),
+ mcq("___ the class already begun when you entered?",["Had","Has","Did"],0,"“Already” + “when you entered” = Had + subject + V3."),
+ mcq("By the time the trainer arrived, the students ___ the room.",["had cleaned","have cleaned","clean"],0,"The cleaning was done first: had cleaned."),
+ type("He said he had ___ that film before. (see)","seen","After had, use V3: seen."),
+ type("I had ___ my phone at home. (leave)","left","After had, use V3: left."),
+ build("I had finished my work before he arrived.","The first action: had finished."),
+ build("She had not eaten anything.","had not + V3."),
+ find("Tap the action that happened first.","After she [had eaten], she left.","“Had eaten” happened first.")
+],["<b>Past Perfect</b> = the earlier of two past actions.","<b>had + V3</b>, the same for every subject.","Signal words: before, after, by the time, already, when.","Do not use it for one action alone."]),
+
+L("papc","Past Perfect Continuous","A long action before a past moment",[
+ learn("Past Perfect Continuous: a long action before",
+  "Use it for a <b>long action</b> that went on <b>up to a moment in the past</b>. It often gives the <b>reason</b> for a past situation.",
+  ["ex","He was tired because he <vb>had been working</vb> since 6 a.m.|long action, then tired","The ground was wet. It <vb>had been raining</vb> all night.|the reason","They <vb>had been playing</vb> for two hours when the lights went out.|how long before"],
+  ["tl",12,34,"A long action before a past moment."],
+  ["tip","Like Past Perfect, but the first action was <b>long</b>: <b>had been + -ing</b>."]),
+ learn("Making it",
+  ["rules",["Positive","<sb>S</sb> + <vb>had been</vb> + <ad>V-ing</ad> <i>I had been waiting.</i>"],["Negative","<sb>S</sb> + <vb>had not been</vb> + <ad>V-ing</ad> <i>We hadn't been waiting.</i>"],["Question","<vb>Had</vb> + <sb>S</sb> + <vb>been</vb> + <ad>V-ing</ad>? <i>Had you been waiting?</i>"]],
+  "Compare: <b>now</b> → <i>have been waiting</i>. <b>Past</b> → <i>had been waiting</i>.",
+  ["warn","She was tired because she has been working.","She was tired because she had been working.","The main sentence is in the past, so use had been (not has been)."],
+  ["list","<b>Signal words</b>: for, since, how long, all day, before, because."]),
+ mcq("He was tired because he ___ since 6 a.m.",["was working","had been working","has been working"],1,"A long action before a past moment: had been working."),
+ mcq("The ground was wet. It ___ all night.",["rained","had been raining","has been raining"],1,"The rain went on before the ground “was” wet: had been raining."),
+ mcq("How long ___ they been waiting when the bus came?",["had","have","were"],0,"The bus “came” = past, so: Had they been waiting?"),
+ mcq("My hands were dirty because I ___ in the garden.",["am working","had been working","work"],1,"The work came before the dirty hands (past)."),
+ mcq("Choose the correct sentence.",["She had been cry.","She had been crying.","She had crying."],1,"had been + V-ing."),
+ type("We had been ___ for an hour. (wait)","waiting","had been + V-ing: waiting."),
+ build("They had been playing for two hours.","had been + -ing."),
+ build("We hadn't been waiting long.","hadn't been + -ing."),
+ sort("Present Perfect Continuous or Past Perfect Continuous?",["Present Perfect Continuous","Past Perfect Continuous"],[["I have been waiting since noon.",0],["I had been waiting since noon when he came.",1],["She has been crying. (now)",0],["She had been crying when I saw her.",1]],"have / has been = now. had been = before a past moment.")
+],["<b>Past Perfect Continuous</b> = a long action before a past moment.","<b>had been + V-ing</b>.","It often gives the reason for a past situation.","now → have / has been · past → had been."]),
+
+L("fw","Future with will","Decisions, promises, predictions",[
+ learn("will: decisions, promises, predictions",
+  "Use <b>will</b> when you decide <b>now</b>, make a <b>promise</b> or an offer, or give an <b>opinion or guess</b> about the future.",
+  ["ex","The phone is ringing. I <vb>will</vb> answer it.|decision made now","I promise I <vb>will</vb> help you.|promise","I think it <vb>will</vb> rain tomorrow.|opinion"],
+  ["tl",82,82,"Something that has not happened yet."],
+  ["tip","<b>will</b> = decide now, promise, or guess. Words like <i>I think, maybe, probably, I promise</i> tell you to use will."]),
+ learn("Making it",
+  ["rules",["Positive","<sb>S</sb> + <vb>will</vb> + V1 <i>I will go.</i>"],["Negative","<sb>S</sb> + <vb>will not (won't)</vb> + V1 <i>I won't go.</i>"],["Question","<vb>Will</vb> + <sb>S</sb> + V1? <i>Will you go?</i>"]],
+  "<b>will</b> is the same for every subject. Short form: I'll, she'll, they'll.",
+  ["warn","She will goes.","She will go.","Modal + plain verb. No -s."],
+  ["list","<b>Signal words</b>: tomorrow, next week, soon, I think, probably, maybe, I hope, I promise."],
+  ["warn","If it will rain, we will stay home.","If it rains, we will stay home.","After <b>if, when, before, as soon as</b> use the PRESENT tense, not will."]),
+ mcq("I think it ___ tomorrow.",["will rain","rains","is raining"],0,"“I think” + tomorrow = a prediction."),
+ mcq("Don't worry. I ___ you.",["help","will help","helped"],1,"A promise or offer: will + V1."),
+ mcq("I promise I ___ late again.",["won't be","don't be","wouldn't be"],0,"A promise: won't + V1."),
+ mcq("___ you help me with this report, please?",["Do","Will","Are"],1,"A request: Will you ...?"),
+ mcq("If it ___ tomorrow, we will stay home.",["will rain","rains","rained"],1,"After if, use the present tense."),
+ mcq("Choose the correct sentence.",["She will comes tomorrow.","She will come tomorrow.","She will to come tomorrow."],1,"will + plain verb."),
+ type("Make it negative. “I will go.” → I ___ go.",["won't","will not"],"will not = won't."),
+ build("Will you call me tomorrow?","Will + subject + V1."),
+ build("I will not be late.","will not + V1."),
+ find("Tap the word that shows the future.","I [will] call you tomorrow.","“Will” shows the future.")
+],["<b>will</b> = decision now, promise, offer, opinion, prediction.","<b>will + V1</b>. Negative: <b>won't</b>. Question: <b>Will + S + V1?</b>","No -s after will.","After if / when / before use the present, not will."]),
+
+L("fg","Future with going to","Plans and proof",[
+ learn("going to: plans and proof",
+  "Use <b>going to</b> for a <b>plan</b> you have <b>already decided</b>, or when you can <b>see proof</b> now that something will happen.",
+  ["ex","I've decided. I <vb>am going to</vb> learn Python this year.|a plan","Look at those dark clouds! It <vb>is going to</vb> rain.|proof you can see now"],
+  ["tl",82,82,"The plan or the proof is here now. The event is later."],
+  ["tip","<b>going to</b> = plan or proof. <b>will</b> = decide now or guess."]),
+ learn("Making it",
+  ["rules",["Positive","<sb>S</sb> + <vb>am / is / are going to</vb> + V1 <i>I am going to start.</i>"],["Negative","<sb>S</sb> + <vb>am / is / are not going to</vb> + V1 <i>She isn't going to come.</i>"],["Question","<vb>Am / Is / Are</vb> + <sb>S</sb> + going to + V1? <i>Are you going to join?</i>"]],
+  "In fast speech people say “gonna”. Use it only when speaking, never in writing.",
+  ["warn","She going to come.","She is going to come.","Do not forget am / is / are."],
+  ["warn","I am going to went.","I am going to go.","After going to, use V1."]),
+ learn("will or going to?",
+  ["table",["will","going to"],["decide <b>now</b>: <i>The phone is ringing. I'll get it.</i>","already decided: <i>I'm going to start a course.</i>"],["guess or opinion: <i>I think it will rain.</i>","guess with <b>proof</b>: <i>Look at those clouds! It's going to rain.</i>"],["promise, offer: <i>I'll help you.</i>","plan: <i>We're going to build a house.</i>"]],
+  "For a <b>fixed arrangement</b> (a time and place already booked), the Present Continuous also works: <i>I am meeting the client at 5.</i>"),
+ mcq("Look at those dark clouds! It ___.",["will rain","is going to rain","rains"],1,"You can see proof now: going to."),
+ mcq("I've decided. I ___ a new course next month.",["start","am going to start","will starting"],1,"A plan already decided: am going to."),
+ mcq("The phone is ringing. I ___ answer it.",["am going to","will","go to"],1,"A decision made right now: will."),
+ mcq("___ you going to join the training tomorrow?",["Do","Are","Will"],1,"Going to question: Are you going to ...?"),
+ mcq("She ___ attend the meeting. She is on leave.",["isn't going to","won't going to","doesn't going to"],0,"Negative: is not going to."),
+ type("I am ___ to buy a laptop. (one word)","going","am + going to + V1."),
+ build("What are you going to say?","Wh-word + are + subject + going to + V1."),
+ build("We are not going to cancel the class.","are not going to + V1."),
+ sort("will or going to?",["will","going to"],[["Decision made right now",0],["Plan you made yesterday",1],["Guess because you see proof",1],["A promise",0],["Opinion: I think it ...",0]],"will = now, promise, opinion. going to = plan, proof.")
+],["<b>going to</b> = plan or proof. <b>am / is / are going to + V1</b>.","<b>will</b> = decision now, promise, opinion.","Do not forget am / is / are.","“gonna” is for speaking only."]),
+
+L("fc","Future Continuous","In progress at a future time",[
+ learn("Future Continuous: in progress at a future time",
+  "Use it for an action that will be <b>in progress at a certain time in the future</b>. Also for polite questions about someone's plans.",
+  ["ex","This time tomorrow, I <vb>will be sitting</vb> in the interview.|in progress then","Don't call me at 9. I <vb>will be taking</vb> a class.|busy at that time","<vb>Will</vb> you <vb>be using</vb> the projector?|polite: are you planning to?"],
+  ["tl",76,92,"At that future time, the action will be running."],
+  ["tip","Imagine a <b>clock in the future</b>. At that time the action will be running: <b>will be + -ing</b>."]),
+ learn("Making it",
+  ["rules",["Positive","<sb>S</sb> + <vb>will be</vb> + <ad>V-ing</ad> <i>I will be working.</i>"],["Negative","<sb>S</sb> + <vb>will not be</vb> + <ad>V-ing</ad> <i>I won't be working.</i>"],["Question","<vb>Will</vb> + <sb>S</sb> + <vb>be</vb> + <ad>V-ing</ad>? <i>Will you be working?</i>"]],
+  ["list","<b>Signal words</b>: this time tomorrow, at 5 p.m. tomorrow, next Monday at 9, all day tomorrow."],
+  ["warn","I will being work.","I will be working.","will + be + V-ing. Never “will being”."]),
+ mcq("This time tomorrow, I ___ in the interview.",["will be sitting","sit","am sitting"],0,"A future moment with the action in progress."),
+ mcq("Don't call me at 9 a.m. I ___ a class.",["will be taking","took","take"],0,"At 9 a.m. the class will be running."),
+ mcq("At 5 p.m. tomorrow, we ___ to Chennai.",["will be travelling","travel","will travelled"],0,"will be + V-ing."),
+ mcq("Tomorrow at this time, I ___ in the office. I'll be on leave.",["won't be working","don't work","wasn't working"],0,"Negative: won't be + V-ing."),
+ mcq("___ you be using the projector at 3 p.m.?",["Will","Do","Are"],0,"Future continuous question: Will + subject + be + V-ing."),
+ type("By this time next week, I ___ on a beach in Goa. (relax) Type: will be ...","will be relaxing","will be + V-ing."),
+ build("Will you be using the laptop tomorrow?","Will + subject + be + -ing."),
+ build("I will be working at that time.","will be + -ing."),
+ find("Tap the verb phrase.","Next Monday at 9 a.m., the new batch [will be attending] their first class.","will be + attending.")
+],["<b>Future Continuous</b> = in progress at a future time.","<b>will be + V-ing</b>.","Signal words: this time tomorrow, at 5 p.m. tomorrow.","Polite question: Will you be using ...?"]),
+
+L("fp","Future Perfect","Finished before a deadline",[
+ learn("Future Perfect: finished before a deadline",
+  "Use it for an action that will be <b>finished before a time in the future</b>.",
+  ["ex","By next March, I <vb>will have completed</vb> my course.|a deadline","By 6 p.m. we <vb>will have finished</vb> the project.|done before 6","In 2030, Priya <vb>will have worked</vb> here for ten years.|counting up to a future point"],
+  ["tl2",64,"finished",84,"deadline"],
+  ["tip","Look for <b>by</b>: by Friday, by next month, by the time. The action will be done before then: <b>will have + V3</b>."]),
+ learn("Making it",
+  ["rules",["Positive","<sb>S</sb> + <vb>will have</vb> + <ad>V3</ad> <i>I will have finished.</i>"],["Negative","<sb>S</sb> + <vb>will not have</vb> + <ad>V3</ad> <i>I won't have finished.</i>"],["Question","<vb>Will</vb> + <sb>S</sb> + <vb>have</vb> + <ad>V3</ad>? <i>Will you have finished?</i>"]],
+  ["list","<b>Signal words</b>: by tomorrow, by next month, by the time, by 2030, before."],
+  ["warn","By next month I will complete the course.","By next month I will have completed the course.","“By + future time” = will have + V3."],
+  ["warn","I will have went there.","I will have gone there.","After will have, use V3."]),
+ mcq("By next March, I ___ my course.",["will complete","will have completed","complete"],1,"A deadline (by March): will have + V3."),
+ mcq("By 6 p.m. today, we ___ the project.",["will have finished","finished","will finishing"],0,"Finished before 6: will have + V3."),
+ mcq("I ___ the book by Friday. It is too long.",["won't have finished","don't finish","haven't finished"],0,"Negative: won't have + V3."),
+ mcq("___ you have finished the report by tomorrow?",["Will","Do","Did"],0,"Will + subject + have + V3?"),
+ mcq("By the time you come, she ___ home.",["will have left","leaves","left"],0,"Her leaving happens before your coming (future): will have left."),
+ type("By next month, the students ___ all tenses. (learn)",["will have learned","will have learnt"],"will have + V3.","Start with: will have ..."),
+ build("I will have finished by Friday.","will have + V3."),
+ build("Will they have arrived by noon?","Will + subject + have + V3."),
+ find("Tap the deadline word.","By [Friday] I will have finished.","“By Friday” is the deadline.")
+],["<b>Future Perfect</b> = finished before a future time.","<b>will have + V3</b>.","Signal words: by tomorrow, by next month, by the time.","Negative: won't have + V3."]),
+
+L("fpc","Future Perfect Continuous","A rare tense, for how long",[
+ learn("Future Perfect Continuous: how long, by a future time",
+  "This tense is <b>rare</b>. Use it to say <b>how long</b> something will have been going on <b>at a future time</b>.",
+  ["ex","By next June, I <vb>will have been working</vb> here for five years.|how long, by June","In December, she <vb>will have been teaching</vb> for ten years.|how long, by December"],
+  ["rules",["Positive","<sb>S</sb> + <vb>will have been</vb> + <ad>V-ing</ad>"],["Negative","<sb>S</sb> + <vb>will not have been</vb> + <ad>V-ing</ad>"],["Question","<vb>Will</vb> + <sb>S</sb> + <vb>have been</vb> + <ad>V-ing</ad>?"]],
+  ["tip","Future Perfect = finished by then. Future Perfect Continuous = <b>how long</b> it will have been going on by then."]),
+ mcq("By next June, I ___ here for five years.",["will have been working","will work","will be working"],0,"How long, by a future time: will have been + V-ing."),
+ mcq("Which tense is “I will have been waiting for an hour”?",["Future Continuous","Future Perfect Continuous","Future Perfect"],1,"will have been + V-ing = Future Perfect Continuous."),
+ build("She will have been teaching for ten years.","will have been + -ing."),
+ type("By 2030 he ___ here for ten years. (work) Type: will have been ...","will have been working","will have been + V-ing.")
+],["<b>will have been + V-ing</b> = how long, by a future time.","It is rare. It is mainly used in writing and formal speech."]),
+
+L("tmix","Tense mix-up","Pairs that confuse everyone",[
+ learn("Five pairs to watch",
+  ["table",["Pair","Rule","Example"],["Past Simple or Present Perfect?","finished time → Past Simple · no time, connected to now → Present Perfect","I saw him yesterday. / I have seen him."],["Present Simple or Present Continuous?","habit → simple · now → continuous","I work every day. / I am working now."],["Past Simple or Past Continuous?","finished action → simple · in progress → continuous","I read a book. / I was reading when you called."],["will or going to?","decide now → will · plan or proof → going to","I'll get it. / I'm going to start a course."],["for or since?","length of time → for · starting point → since","for two years / since 2022"]],
+  ["tip","When confused, find the <b>signal word</b> first. It usually decides the tense."]),
+ mcq("I ___ him yesterday.",["saw","have seen","was seeing"],0,"“Yesterday” = a finished time: Past Simple."),
+ mcq("I ___ him for a long time.",["know","have known","am knowing"],1,"“For a long time” + know (a state verb): Present Perfect."),
+ mcq("She ___ English for three years.",["studies","has been studying","studied"],1,"“For three years” + still studying: Present Perfect Continuous."),
+ mcq("Look! The children ___ in the garden.",["play","are playing","played"],1,"“Look!” = now: Present Continuous."),
+ mcq("The sun ___ in the east.",["rises","is rising","rose"],0,"A fact: Present Simple."),
+ mcq("I ___ when the phone rang.",["slept","was sleeping","have slept"],1,"Long action interrupted by a short action: Past Continuous."),
+ mcq("When we arrived, the film ___.",["started","had started","has started"],1,"The film started first: Past Perfect."),
+ mcq("Dark clouds! It ___ rain.",["will","is going to","rains"],1,"Proof you can see now: going to."),
+ mcq("By next year, I ___ my degree.",["will complete","will have completed","complete"],1,"“By next year” = a deadline: Future Perfect."),
+ mcq("He ___ here since 2022.",["works","has worked","worked"],1,"“Since 2022” = starting point, still true: Present Perfect."),
+ type("They ___ cricket every Sunday. (play)","play","“Every Sunday” = a habit. They + V1: play."),
+ type("She ___ to Chennai last year. (move)","moved","“Last year” = finished time: Past Simple."),
+ build("I have been learning English for two years.","have been + -ing, with “for” a length of time."),
+ build("When I arrived, they had already left.","Past Simple (arrived) + Past Perfect (had left).")
+],["Past Simple = finished time. Present Perfect = connected to now.","Present Simple = habit. Present Continuous = now.","Past Simple = finished. Past Continuous = in progress.","will = decide now. going to = plan or proof.","for + length. since + starting point."])
+
+]);
+
+}
+
+</script>
+<script>
+with(H){
+
+MOD("m5","5. More basics you need","Everyday grammar that scholars use at work and in tests.",[
+
+L("count","Countable and uncountable","some, any, much, many",[
+ learn("Can you count it?",
+  "<b>Countable nouns</b> can be counted: one pen, two pens. <b>Uncountable nouns</b> cannot be counted one by one: water, rice, information, advice, furniture, money, news, homework.",
+  ["table",["Countable","Uncountable"],["a book, two books","water, rice"],["a chair, three chairs","furniture, money"],["an idea, many ideas","information, advice, news"]],
+  ["warn","She gave me many advices.","She gave me a lot of advice.","Advice is uncountable. It has no plural and no “a”."],
+  ["warn","The news are good.","The news is good.","Uncountable nouns take a singular verb."],
+  ["tip","To count an uncountable noun, use a unit: <i>a piece of advice, a glass of water, a cup of tea, a bag of rice</i>."]),
+ learn("many, much, a lot of, some, any",
+  ["table",["Word","Use with","Example"],["many","countable, mostly in questions and negatives","How many students are there?"],["much","uncountable, mostly in questions and negatives","I don't have much time."],["a lot of","both, in positive sentences","She has a lot of friends. We have a lot of work."],["some","positive sentences and offers","I have some questions. Would you like some tea?"],["any","questions and negatives","Do you have any questions? I don't have any money."],["a few / few","countable: a few = some, few = almost none","I have a few friends."],["a little / little","uncountable: a little = some, little = almost none","I have a little time."]]),
+ mcq("Which noun is uncountable?",["chair","advice","book"],1,"You cannot say “one advice, two advices”. Advice is uncountable."),
+ mcq("How ___ water do you drink?",["many","much","few"],1,"Water is uncountable: much."),
+ mcq("How ___ students are in your batch?",["many","much","little"],0,"Students can be counted: many."),
+ mcq("I don't have ___ time.",["many","much","a few"],1,"Time is uncountable, and the sentence is negative: much."),
+ mcq("The news ___ good.",["is","are"],0,"News is uncountable, so it takes “is”."),
+ mcq("Do you have ___ questions?",["some","any","much"],1,"A question: any."),
+ mcq("I need ___ advice.",["an","some","many"],1,"Advice is uncountable. Use some, not a / an."),
+ sort("Countable or uncountable?",["Countable","Uncountable"],[["pen",0],["water",1],["information",1],["laptop",0],["furniture",1],["idea",0],["homework",1],["student",0]],"If you can say “one ___, two ___”, it is countable.")
+],["<b>Countable</b>: one, two ... <b>Uncountable</b>: water, advice, information, news, furniture, homework.","<b>many</b> + countable · <b>much</b> + uncountable · <b>a lot of</b> + both.","<b>some</b> in positive sentences · <b>any</b> in questions and negatives.","<b>a few / a little</b> = some · <b>few / little</b> = almost none."]),
+
+L("compare","Comparing things","bigger, biggest, as ... as",[
+ learn("Comparative and superlative",
+  "Use the <b>comparative</b> to compare two things. Use the <b>superlative</b> for the top one in a group.",
+  ["table",["Adjective","Comparative (two)","Superlative (top)"],["tall (short word)","taller","the tallest"],["big (double the letter)","bigger","the biggest"],["happy (y → i)","happier","the happiest"],["beautiful (long word)","more beautiful","the most beautiful"],["good (irregular)","better","the best"],["bad (irregular)","worse","the worst"]],
+  ["rules",["Short words","adjective + <b>er</b> / the + adjective + <b>est</b>"],["Long words","<b>more</b> + adjective / <b>the most</b> + adjective"]],
+  "Use <b>than</b> after a comparative: <i>Ravi is taller than Kumar.</i> Use <b>the</b> before a superlative: <i>He is the tallest in the class.</i>",
+  ["warn","She is more taller than me.","She is taller than me.","Never use more and -er together."]),
+ learn("as ... as",
+  "Use <b>as + adjective + as</b> when two things are equal: <i>Priya is as tall as Meena.</i> Use <b>not as ... as</b> when one is less: <i>This test is not as difficult as that one.</i>"),
+ mcq("My bag is ___ than yours.",["heavy","heavier","heaviest"],1,"Two things, short word, y becomes i: heavier."),
+ mcq("This is ___ book I have ever read.",["good","better","the best"],2,"The top of all: the best."),
+ mcq("English is ___ than Maths for me.",["more easy","easier","most easy"],1,"Short word: easier."),
+ mcq("She is ___ girl in the class.",["the most intelligent","more intelligent","intelligenter"],0,"Long word, top of the group: the most intelligent."),
+ mcq("Choose the correct sentence.",["He is more smarter than me.","He is smarter than me.","He is smart than me."],1,"Use -er, and never more together with it."),
+ type("Ravi is ___ than Kumar. (tall)","taller","Short word: tall + er."),
+ type("This is the ___ day of my life. (good)","best","good → better → best."),
+ build("She is as tall as her sister.","as + adjective + as."),
+ sort("-er / -est or more / most?",["-er / -est","more / most"],[["fast",0],["expensive",1],["small",0],["interesting",1],["old",0],["comfortable",1]],"Short words take -er / -est. Long words take more / most.")
+],["Two things: <b>-er / more ... than</b>. The top: <b>the -est / the most</b>.","Irregular: good → better → best · bad → worse → worst.","Never use <b>more</b> and <b>-er</b> together.","<b>as ... as</b> = equal."]),
+
+L("if","If sentences","Conditionals",[
+ learn("Zero and first conditional",
+  "A <b>conditional</b> sentence has an <b>if</b> part (the condition) and a result part.",
+  ["table",["Type","Meaning","Pattern","Example"],["Zero","always true","if + present, present","If you heat ice, it melts."],["First","real, possible future","if + present, <b>will</b> + V1","If it rains, we will stay home."]],
+  ["warn","If it will rain, we will stay home.","If it rains, we will stay home.","Never use will in the if part."],
+  ["tip","Put a comma when the if part comes first. No comma when it comes second: <i>We will stay home if it rains.</i>"]),
+ learn("Second and third conditional",
+  ["table",["Type","Meaning","Pattern","Example"],["Second","unreal or unlikely now","if + past, <b>would</b> + V1","If I had time, I would learn French."],["Third","past, cannot change","if + past perfect, would have + V3","If I had studied, I would have passed."]],
+  "In the second conditional we use <b>were</b> for all subjects: <i>If I were you, I would apply.</i>",
+  ["tip","Second = dream or advice. Third = regret."]),
+ mcq("If you ___ hard, you will pass.",["study","will study","studied"],0,"First conditional: if + present."),
+ mcq("If it ___ tomorrow, we will cancel the trip.",["will rain","rains","rained"],1,"After if, use the present simple."),
+ mcq("If I ___ a bird, I would fly to you.",["am","were","will be"],1,"Second conditional: were."),
+ mcq("If I had more time, I ___ learn French.",["will","would","had"],1,"Second conditional result: would + V1."),
+ mcq("If she had left earlier, she ___ the train.",["would catch","would have caught","will catch"],1,"Third conditional (past regret): would have + V3."),
+ mcq("If you heat water to 100°C, it ___.",["boils","will boil","boiled"],0,"A fact (zero conditional): present + present."),
+ build("If it rains, we will stay home.","if + present, will + V1."),
+ sort("Which conditional is it?",["First (possible)","Second (dream)","Third (regret)"],[["If I win, I will celebrate.",0],["If I were rich, I would travel.",1],["If I had known, I would have helped.",2]],"Possible future = first. Unreal now = second. Past regret = third.")
+],["Zero: if + present, present (facts).","First: if + present, <b>will</b> + V1.","Second: if + past, <b>would</b> + V1 (were for all subjects).","Third: if + had + V3, would have + V3.","Never use will in the if part."]),
+
+L("passive","Active and passive","Who does it, and who receives it",[
+ learn("Active and passive",
+  "In an <b>active</b> sentence, the subject does the action: <i>Ravi wrote the report.</i> In a <b>passive</b> sentence, the subject receives the action: <i>The report was written by Ravi.</i>",
+  ["rules",["Passive","<sb>object</sb> + <vb>be</vb> + <ad>V3</ad> (+ by the doer)"]],
+  "The <b>be</b> verb takes the tense. The main verb is always <b>V3</b>.",
+  ["table",["Tense","Active","Passive"],["Present Simple","They make tea.","Tea is made."],["Past Simple","They made tea.","Tea was made."],["Present Perfect","They have made tea.","Tea has been made."],["Future","They will make tea.","Tea will be made."],["Modal","They can make tea.","Tea can be made."]],
+  ["tip","Use the passive when the doer is not important or not known: <i>My phone was stolen.</i>"]),
+ mcq("The report ___ by Ravi yesterday.",["wrote","was written","is written"],1,"Passive, past: was + V3."),
+ mcq("English ___ all over the world.",["speaks","is spoken","spoke"],1,"Passive, present: is + V3."),
+ mcq("The work ___ finished already.",["has been","was being","will be"],0,"Passive, present perfect: has been + V3. “Already” shows it is done now."),
+ mcq("The work ___ tomorrow.",["will finish","will be finished","will finished"],1,"Passive, future: will be + V3."),
+ type("Make it passive: “They built the bridge.” → The bridge ___ built.","was","Past passive: was + V3.","Past tense of be"),
+ mcq("Which sentence is passive?",["She wrote a letter.","A letter was written.","She is writing a letter."],1,"The subject (a letter) receives the action: was written."),
+ sort("Active or passive?",["Active","Passive"],[["The chef cooked dinner.",0],["Dinner was cooked by the chef.",1],["The manager signed the form.",0],["The form was signed.",1]],"Passive = be + V3.")
+],["Passive: <b>be + V3</b>. The <b>be</b> verb shows the tense.","Use the passive when the doer is unknown or not important.","Active: Ravi wrote it. Passive: It was written (by Ravi)."]),
+
+L("report","Reported speech","What someone said",[
+ learn("Telling what someone said",
+  "<b>Direct speech</b> gives the exact words: <i>She said, “I am tired.”</i> <b>Reported speech</b> tells the idea: <i>She said that she was tired.</i> The tense usually moves <b>one step back</b>.",
+  ["table",["Direct","Reported"],["am / is / are","was / were"],["Present Simple (works)","Past Simple (worked)"],["Present Continuous (is working)","Past Continuous (was working)"],["Present Perfect (has worked)","Past Perfect (had worked)"],["Past Simple (worked)","Past Perfect (had worked)"],["will","would"],["can","could"]],
+  "Pronouns and time words also change: <i>I → he / she</i> · <i>now → then</i> · <i>today → that day</i> · <i>tomorrow → the next day</i> · <i>yesterday → the day before</i> · <i>here → there</i>.",
+  ["ex","He said, “I will call you tomorrow.” → He said that he <vb>would</vb> call me <tm>the next day</tm>.|will becomes would, tomorrow becomes the next day"]),
+ learn("Reported questions",
+  "Reported questions use <b>statement order</b>. There is no do / does / did, and no question mark.",
+  ["ex","She asked, “Where do you live?” → She asked me where I <vb>lived</vb>.|no “do”","He asked, “Are you ready?” → He asked if I <vb>was</vb> ready.|yes/no question → if / whether"]),
+ mcq("She said, “I am tired.” → She said that she ___ tired.",["is","was","has been"],1,"am / is becomes was."),
+ mcq("He said, “I will call you.” → He said that he ___ call me.",["will","would","can"],1,"will becomes would."),
+ mcq("She said, “I work in Madurai.” → She said she ___ in Madurai.",["works","worked","had work"],1,"Present Simple becomes Past Simple."),
+ mcq("He asked, “Where do you live?” → He asked me where I ___.",["do live","lived","did live"],1,"No do / did in reported questions: lived."),
+ mcq("He said, “I am coming tomorrow.” → He said he was coming ___.",["tomorrow","the next day","yesterday"],1,"tomorrow becomes the next day."),
+ mcq("She asked, “Are you ready?” → She asked ___ I was ready.",["if","that","what"],0,"A yes/no question: if or whether."),
+ match("Match the direct word with the reported word.",[["now","then"],["today","that day"],["tomorrow","the next day"],["here","there"]],"Time and place words move away from the speaker.")
+],["Reported speech: the tense moves <b>one step back</b> (am → was, will → would, can → could).","Pronouns and time words change: I → he, tomorrow → the next day.","Reported questions: <b>statement order</b>, no do / did, use if / whether."]),
+
+L("sva","Subject and verb agreement","Make them match",[
+ learn("The golden rule",
+  "A <b>singular</b> subject takes a <b>singular</b> verb. A <b>plural</b> subject takes a <b>plural</b> verb.",
+  ["list","<b>One person or thing</b>: <i>The boy plays. The bus stops.</i>","<b>More than one</b>: <i>The boys play. The buses stop.</i>","<b>Two subjects joined by “and”</b>: <i>Ravi and Priya are here.</i> (plural)","<b>each, every, everyone, nobody, someone</b>: <i>Each student has a book. Everyone is here.</i> (singular)","<b>One of the ...</b> takes a singular verb: <i>One of my friends is a doctor.</i>","<b>The number of</b> takes a singular verb. <b>A number of</b> takes a plural verb.","Ignore extra words between subject and verb: <i>The box of apples is heavy.</i> (the box is heavy)"]),
+ learn("Tricky cases",
+  ["list","<b>Neither ... nor / either ... or</b>: the verb agrees with the nearer subject: <i>Neither Ravi nor his friends are here.</i>","<b>Subjects with “with” or “along with”</b>: the first subject decides: <i>The teacher, with her students, is arriving.</i>","<b>Nouns that look plural but are singular</b>: news, mathematics, physics, economics: <i>Mathematics is hard.</i>","<b>Plural-only nouns</b>: scissors, trousers, glasses: <i>My trousers are new.</i>"]),
+ mcq("Each of the students ___ a book.",["have","has"],1,"Each is singular: has."),
+ mcq("The box of apples ___ heavy.",["is","are"],0,"The subject is the box (one): is."),
+ mcq("Ravi and Priya ___ my friends.",["is","are"],1,"Two people joined by and: are."),
+ mcq("Neither the teacher nor the students ___ here.",["is","are"],1,"The verb agrees with the nearer subject: students (plural)."),
+ mcq("One of my friends ___ a doctor.",["is","are"],0,"“One of” takes a singular verb: is."),
+ mcq("Mathematics ___ difficult for me.",["is","are"],0,"Mathematics is singular, even though it ends in s."),
+ mcq("My trousers ___ new.",["is","are"],1,"Trousers is plural."),
+ mcq("Everybody ___ ready.",["is","are"],0,"Everybody is singular.")
+],["Singular subject → singular verb. Plural subject → plural verb.","<b>Each, every, everyone, nobody</b> and <b>one of</b> are singular.","Ignore the words between the subject and the verb.","Neither / either: agree with the nearer subject."]),
+
+L("tags","Question tags and short answers","isn't it? don't you?",[
+ learn("Question tags",
+  "A <b>question tag</b> is a short question at the end of a sentence. Use it to check something or to invite agreement.",
+  ["rules",["Positive → negative tag","<i>You are ready, <b>aren't you</b>?</i>"],["Negative → positive tag","<i>You aren't ready, <b>are you</b>?</i>"]],
+  ["table",["Sentence","Tag"],["She works here,","doesn't she?"],["They went home,","didn't they?"],["He can swim,","can't he?"],["You haven't finished,","have you?"],["I am right,","aren't I?"],["Let's go,","shall we?"]],
+  "The tag uses the same helping verb as the sentence. If there is no helper in the Present Simple or Past Simple, use do / does / did."),
+ learn("Short answers",
+  "To answer yes/no questions in a natural way, repeat the helper: <i>Are you ready? Yes, I am. / No, I'm not.</i> <i>Does she like tea? Yes, she does. / No, she doesn't.</i> <i>Can he swim? Yes, he can. / No, he can't.</i>"),
+ mcq("She works here, ___?",["doesn't she","isn't she","does she"],0,"A positive sentence takes a negative tag. Present Simple: doesn't she."),
+ mcq("They went home, ___?",["didn't they","don't they","did they"],0,"Past Simple: didn't they."),
+ mcq("You haven't finished, ___?",["haven't you","have you","did you"],1,"A negative sentence takes a positive tag: have you."),
+ mcq("He can swim, ___?",["can't he","doesn't he","isn't he"],0,"Same helper as the sentence: can't he."),
+ mcq("Does she like tea? Yes, she ___.",["likes","does","is"],1,"A short answer repeats the helper: does."),
+ mcq("Are you a trainer? No, I ___.",["don't","am not","not"],1,"Short answer: No, I'm not."),
+ type("It's a nice day, ___ it?","isn't","is + not = isn't it?")
+],["Positive sentence → <b>negative tag</b>. Negative sentence → <b>positive tag</b>.","The tag uses the same helper. No helper? Use do / does / did.","Short answers repeat the helper: Yes, she does."]),
+
+L("gerund","-ing form or to + verb?","enjoy doing, want to do",[
+ learn("Which verb form comes next?",
+  "When two verbs come together, the second verb is either <b>-ing</b> (gerund) or <b>to + V1</b> (infinitive). It depends on the first verb. You must learn which verbs take which.",
+  ["table",["Use -ing after","Use to + V1 after"],["enjoy, finish, avoid, mind, suggest, keep, practise","want, need, hope, plan, decide, agree, promise, learn"],["<i>I enjoy reading.</i>","<i>I want to read.</i>"],["<i>She finished writing.</i>","<i>She decided to write.</i>"]],
+  ["warn","I enjoy to read.","I enjoy reading.","Enjoy is followed by -ing."],
+  ["warn","I want going home.","I want to go home.","Want is followed by to + V1."]),
+ learn("Other uses",
+  ["list","<b>After a preposition, use -ing</b>: <i>She is good at singing. Thank you for helping me.</i>","<b>Purpose</b>: <i>I went to the bank to get money.</i> (to + V1 shows the reason)","<b>After modals use V1 only</b>: <i>I can swim. She must go.</i>","<b>Both forms</b> after like, love, hate, start, begin: <i>I like to swim. I like swimming.</i>"]),
+ mcq("I enjoy ___ English.",["to learn","learning","learn"],1,"Enjoy + -ing."),
+ mcq("She wants ___ a doctor.",["be","being","to be"],2,"Want + to + V1."),
+ mcq("He is good at ___ cricket.",["play","playing","to play"],1,"After a preposition, use -ing."),
+ mcq("I went to the shop ___ some milk.",["buy","buying","to buy"],2,"A purpose: to + V1."),
+ mcq("They decided ___ early.",["leaving","to leave","leave"],1,"Decide + to + V1."),
+ mcq("You must ___ now.",["go","to go","going"],0,"After a modal, use V1 only."),
+ mcq("Thank you for ___ me.",["help","to help","helping"],2,"After a preposition: -ing."),
+ sort("-ing or to + V1?",["-ing","to + V1"],[["enjoy",0],["want",1],["finish",0],["decide",1],["avoid",0],["hope",1],["mind",0],["plan",1]],"Learn them in groups. Enjoy, finish, avoid, mind take -ing.")
+],["<b>enjoy, finish, avoid, mind, suggest</b> + -ing.","<b>want, need, hope, plan, decide, promise</b> + to + V1.","After a preposition: -ing. After a modal: V1.","to + V1 shows purpose."]),
+
+L("punct","Punctuation","Full stop, comma, apostrophe",[
+ learn("Four marks you use every day",
+  ["table",["Mark","Use","Example"],["Full stop .","ends a statement","She works in Madurai."],["Question mark ?","ends a question","Where do you live?"],["Comma ,","a list, or after an opening word","I bought pens, books and bags. However, he came."],["Apostrophe '","short forms and belonging","I don't know. This is Priya's bag."]]),
+ learn("Apostrophe: two jobs",
+  ["list","<b>Short form</b>: do not → don't · it is → it's · I am → I'm · she will → she'll","<b>Belonging</b>: Priya's bag · the teacher's desk · the students' books (many students)"],
+  ["warn","The dog wagged it's tail.","The dog wagged its tail.","<b>its</b> = belongs to it. <b>it's</b> = it is."],
+  ["warn","Apple's are cheap today.","Apples are cheap today.","Do not use an apostrophe for a simple plural."]),
+ mcq("Which is correct?",["Its raining.","It's raining.","Its' raining."],1,"It's = it is."),
+ mcq("This is ___ bag.",["Priya's","Priyas","Priyas'"],0,"Belonging: Priya's."),
+ mcq("The ___ books are on the table. (many students)",["students","student's","students'"],2,"The books belong to many students: students'."),
+ mcq("Choose the correct sentence.",["I bought pens books and bags.","I bought pens, books and bags.","I bought, pens books, and bags."],1,"Use commas to separate items in a list."),
+ mcq("Where do you live___",[".","?","!"],1,"It is a question: ?"),
+ find("Tap the word that is wrong.","The [dog's] are playing in the garden.","A simple plural does not take an apostrophe: dogs.")
+],["Full stop for statements. Question mark for questions.","Comma separates items in a list.","Apostrophe: short forms (don't, it's) and belonging (Priya's).","<b>its</b> = belongs to it. <b>it's</b> = it is."]),
+
+L("final","Final review","Mixed practice from all the basics",[
+ learn("You have come a long way",
+  "This last lesson mixes questions from everything you studied. If you miss one, it will come back once more. Use <b>Revise</b> on the home screen every day for ten minutes. Repetition builds memory."),
+ mcq("My brother ___ in a bank.",["work","works","is work"],1,"Present Simple, he: works."),
+ mcq("She ___ since morning.",["is working","has been working","worked"],1,"Since + still going: have / has been + -ing."),
+ mcq("He ___ to Chennai yesterday.",["go","went","has gone"],1,"Yesterday = Past Simple: went."),
+ mcq("When I arrived, they ___.",["left","had left","leave"],1,"They left first: Past Perfect."),
+ mcq("You ___ see a doctor. (advice)",["must to","should","can to"],1,"Advice: should + V1."),
+ mcq("I ___ here for five years.",["live","am living","have lived"],2,"For five years: Present Perfect."),
+ mcq("If it rains, we ___ at home.",["stay","will stay","would stay"],1,"First conditional: will + V1."),
+ mcq("Everyone ___ ready.",["is","are"],0,"Everyone is singular."),
+ mcq("She is ___ girl in the class.",["tallest","the tallest","more tall"],1,"The top of the group: the tallest."),
+ mcq("The email ___ yesterday.",["sent","was sent","is sent"],1,"Passive, past: was sent."),
+ build("I have been learning English for two years.","have been + -ing."),
+ build("Where do you live?","Wh-word + do + subject + V1."),
+ type("She ___ (not / like) spicy food.","doesn't like","She + negative + V1: doesn't like."),
+ type("They ___ cricket now. (play)","are playing","Now = Present Continuous: are playing."),
+ match("Match the tense to its signal word.",[["Present Simple","every day"],["Present Continuous","right now"],["Present Perfect","since 2022"],["Past Simple","yesterday"]],"Signal words usually decide the tense.")
+],["Find the <b>signal word</b>, then choose the tense.","Use <b>Revise</b> every day. Ten minutes a day is better than two hours once a week.","Speak your answers aloud. Say each example sentence three times."])
+
+]);
+
+}
+
+</script>
+<script>
+(function(){
+"use strict";
+function $(s,r){return (r||document).querySelector(s)}
+function h(tag,props){
+  var e=document.createElement(tag);
+  if(props)for(var k in props){var v=props[k];
+    if(k==="class")e.className=v;
+    else if(k==="on"){for(var ev in v)e.addEventListener(ev,v[ev])}
+    else if(v===true)e.setAttribute(k,"");
+    else if(v!==false&&v!=null)e.setAttribute(k,v)}
+  for(var i=2;i<arguments.length;i++){var kids=[].concat(arguments[i]);
+    for(var j=0;j<kids.length;j++){var c=kids[j];if(c==null||c===false)continue;e.append(c.nodeType?c:document.createTextNode(c))}}
+  return e;
+}
+function HT(el,html){el.innerHTML=html;return el}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function plain(html){var d=document.createElement("div");d.innerHTML=html;return d.textContent}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function norm(s){return String(s).toLowerCase().replace(/[‘’]/g,"'").replace(/[.!?]+$/,"").replace(/\s+/g," ").trim()}
+
+/* ---- saved progress (this browser only) ---- */
+var KEY="english-step-by-step-v1";
+function fresh(){return {done:{},last:""}}
+var S;try{S=Object.assign(fresh(),JSON.parse(localStorage.getItem(KEY)||"{}"))}catch(e){S=fresh()}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+
+var ALL=[],BYID={};
+COURSE.forEach(function(m,mi){m.lessons.forEach(function(l){var x={m:m,mi:mi,l:l,n:ALL.length+1};ALL.push(x);BYID[l.id]=x})});
+
+/* ---- listen (text to speech) ---- */
+var TTS=("speechSynthesis" in window)&&("SpeechSynthesisUtterance" in window);
+function speak(html){if(!TTS)return;try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(plain(html));u.lang="en-IN";u.rate=.9;speechSynthesis.speak(u)}catch(e){}}
+var ICON='<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+function listenBtn(html){if(!TTS)return null;var b=h("button",{class:"listen",type:"button","aria-label":"Listen to this sentence",on:{click:function(){speak(html)}}});b.innerHTML=ICON;return b}
+
+/* ---- learn blocks ---- */
+function block(b){
+  if(typeof b==="string")return HT(h("p"),b);
+  var k=b[0],i;
+  if(k==="p")return HT(h("p"),b[1]);
+  if(k==="ex"){var w=h("div",{class:"ex"});
+    b.slice(1).forEach(function(x){var p=x.split("|"),row=h("div",{class:"exrow"}),lb=listenBtn(p[0]);if(lb)row.append(lb);
+      var t=h("div",{class:"extext"});t.append(HT(h("div",{class:"sent"}),p[0]));if(p[1])t.append(HT(h("div",{class:"note"}),p[1]));row.append(t);w.append(row)});return w}
+  if(k==="tip")return HT(h("div",{class:"tip"}),'<span class="label">Remember</span><p>'+b[1]+'</p>');
+  if(k==="warn"){var d=h("div",{class:"warn"});d.append(HT(h("div",{class:"wl bad"}),"<b>Wrong</b> "+b[1]),HT(h("div",{class:"wl good"}),"<b>Right</b> "+b[2]));if(b[3])d.append(HT(h("div",{class:"why"}),b[3]));return d}
+  if(k==="rules"){var r=h("div",{class:"rules"});b.slice(1).forEach(function(x){r.append(h("div",{class:"rule"},HT(h("span",{class:"rl"}),x[0]),HT(h("div",{class:"rf"}),x[1])))});return r}
+  if(k==="table"){var t=h("table"),hd=h("tr");b[1].forEach(function(c){hd.append(HT(h("th"),c))});t.append(hd);
+    b.slice(2).forEach(function(row){var tr=h("tr");row.forEach(function(c){tr.append(HT(h("td"),c))});t.append(tr)});return h("div",{class:"tablewrap"},t)}
+  if(k==="list"){var u=h("ul");b.slice(1).forEach(function(x){u.append(HT(h("li"),x))});return u}
+  if(k==="tl"){var a=b[1],z=b[2],tr2=h("div",{class:"tltrack"});
+    tr2.append(a===z?h("i",{class:"tldot",style:"left:"+a+"%"}):h("i",{class:"tlseg",style:"left:"+a+"%;width:"+(z-a)+"%"}),h("i",{class:"tlnow"}));
+    var tl=h("div",{class:"tl"},tr2,h("div",{class:"tllab"},h("span",null,"PAST"),h("span",null,"NOW"),h("span",null,"FUTURE")));
+    if(b[3])tl.append(HT(h("p",{class:"tlnote"}),b[3]));return tl}
+  if(k==="tl2"){var t2=h("div",{class:"tltrack"});
+    [[b[1],b[2]],[b[3],b[4]]].forEach(function(p,n){t2.append(h("i",{class:"tldot",style:"left:"+p[0]+"%;"+(n?"opacity:.55":"")}),h("span",{class:"tlpin",style:"left:"+p[0]+"%"},p[1]))});
+    t2.append(h("i",{class:"tlnow"}));
+    return h("div",{class:"tl two"},t2,h("div",{class:"tllab"},h("span",null,"PAST"),h("span",null,"NOW"),h("span",null,"FUTURE")))}
+  return h("p",null,"");
+}
+
+/* ---- feedback ---- */
+var PRAISE=["Correct!","Yes, that is right.","Well done.","Good one."];
+function feedback(ok,s,info){
+  info=info||{};
+  var d=h("div",{class:"fb "+(ok?"ok":"no"),role:"status"});
+  d.append(h("p",{class:"fhead"},ok?PRAISE[Math.floor(Math.random()*PRAISE.length)]:"Not quite."));
+  if(!ok){
+    if(info.pick!=null)d.append(HT(h("p"),"<b>Your answer:</b> "+esc(info.pick)));
+    if(info.why)d.append(HT(h("p"),info.why));
+    if(info.right!=null)d.append(HT(h("p"),"<b>Right answer:</b> "+info.right));
+    if(info.extra)d.append(HT(h("p"),info.extra));
+  }
+  if(s.e)d.append(HT(h("p"),s.e));
+  return d;
+}
+function qNode(q){
+  var p=h("p",{class:"q"}),blank=null;
+  if(q.indexOf("___")>-1){var parts=q.split("___");blank=h("span",{class:"blank"});p.append(HT(h("span"),parts[0]),blank,HT(h("span"),parts[1]))}
+  else HT(p,q);
+  return {node:p,blank:blank};
+}
+
+/* ---- step renderers ---- */
+var R={};
+R.learn=function(box,s,api){
+  box.append(h("h2",{class:"st"},s.title));
+  s.b.forEach(function(b){box.append(block(b))});
+  api.next();
+};
+R.reveal=function(box,s,api){
+  box.append(h("h2",{class:"st"},s.title),HT(h("p"),s.intro));
+  var opened=0,total=s.i.length,cnt=h("p",{class:"note"},"Opened 0 of "+total),grid=h("div",{class:"rgrid"});
+  s.i.forEach(function(it){
+    var body=HT(h("div",{class:"rbody",hidden:true}),it[1]),seen=false;
+    var b=h("button",{type:"button",class:"rcard","aria-expanded":"false"},it[0]);
+    b.addEventListener("click",function(){var show=body.hidden;body.hidden=!show;b.setAttribute("aria-expanded",String(show));b.classList.toggle("open",show);
+      if(show&&!seen){seen=true;opened++;cnt.textContent="Opened "+opened+" of "+total}});
+    grid.append(h("div",null,b,body));
+  });
+  box.append(grid,cnt);api.next();
+};
+R.mcq=function(box,s,api,ctx){
+  var qn=qNode(s.q);box.append(h("span",{class:"qlabel"},"Choose the answer"),qn.node);
+  var opts=shuffle(s.o.map(function(t,i){return {t:t,i:i}})),wrap=h("div",{class:"opts",role:"group","aria-label":"Answers"}),btns=[],done=false;
+  function choose(k){
+    if(done)return;done=true;var o=opts[k],ok=o.i===s.a;
+    btns.forEach(function(b,j){b.classList.add("locked");b.setAttribute("aria-disabled","true");
+      if(opts[j].i===s.a){b.classList.add("correct");b.append(h("span",{class:"mark"},"Correct"))}
+      else if(j===k){b.classList.add("wrong");b.append(h("span",{class:"mark"},"Your pick"))}
+      else b.classList.add("dim")});
+    if(qn.blank){qn.blank.textContent=plain(s.o[s.a]);qn.blank.classList.add("ok")}
+    api.result(ok,feedback(ok,s,{pick:plain(o.t),why:s.x&&s.x[o.i],right:esc(s.o[s.a])}));
+  }
+  opts.forEach(function(o,k){var b=h("button",{type:"button",class:"opt",on:{click:function(){choose(k)}}},h("span",{class:"key"},String(k+1)));
+    b.append(HT(h("span",{class:"otext"}),o.t));btns.push(b);wrap.append(b)});
+  box.append(wrap);api.waiting("Choose an answer");
+  ctx.key=function(n){if(n>=1&&n<=opts.length)choose(n-1)};
+};
+R.type=function(box,s,api){
+  var qn=qNode(s.q);box.append(h("span",{class:"qlabel"},"Type the answer"),qn.node);
+  var inp=h("input",{type:"text",class:"inp","aria-label":"Your answer",autocomplete:"off",autocapitalize:"off",spellcheck:"false"});
+  box.append(inp);
+  if(s.h){var hn=HT(h("p",{class:"note",hidden:true}),"Hint: "+s.h),hb=h("button",{type:"button",class:"btn ghost sm",on:{click:function(){hn.hidden=false;hb.hidden=true}}},"Show a hint");box.append(hb,hn)}
+  function check(){var v=norm(inp.value);if(!v)return;var ok=s.a.some(function(a){return norm(a)===v});inp.disabled=true;
+    if(qn.blank&&ok){qn.blank.textContent=inp.value.trim();qn.blank.classList.add("ok")}
+    api.result(ok,feedback(ok,s,{pick:inp.value.trim(),right:esc(s.a[0])}))}
+  api.checkable(check);
+  inp.addEventListener("input",function(){api.ready(inp.value.trim().length>0)});
+  inp.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();check()}});
+};
+R.build=function(box,s,api){
+  box.append(h("span",{class:"qlabel"},"Build the sentence"),HT(h("p",{class:"q"}),s.q||"Tap the words in the right order."));
+  var tiles=shuffle(s.s.split(" ").concat(s.extra||[]).map(function(w,i){return {w:w,id:i}})),placed=[],locked=false;
+  var slots=h("div",{class:"slots","aria-label":"Your sentence"}),bank=h("div",{class:"bank","aria-label":"Words"});
+  function draw(){
+    slots.replaceChildren();bank.replaceChildren();
+    placed.forEach(function(t){slots.append(h("button",{type:"button",class:"tile",on:{click:function(){if(locked)return;placed=placed.filter(function(x){return x!==t});draw()}}},t.w))});
+    tiles.forEach(function(t){
+      if(placed.indexOf(t)>-1)bank.append(h("span",{class:"tile ghost","aria-hidden":"true"},t.w));
+      else bank.append(h("button",{type:"button",class:"tile",on:{click:function(){if(locked)return;placed.push(t);draw()}}},t.w));
+    });
+    api.ready(placed.length>=2);
+  }
+  box.append(slots,bank);
+  api.checkable(function(){
+    locked=true;var ans=placed.map(function(t){return t.w}).join(" "),ok=ans===s.s;
+    slots.querySelectorAll(".tile").forEach(function(b){b.disabled=true;if(ok)b.classList.add("right")});
+    var fb=feedback(ok,s,{pick:ans,right:esc(s.s)});var lb=listenBtn(s.s);if(lb)fb.append(h("p",null,lb," Listen to the correct sentence"));
+    api.result(ok,fb);
+  });
+  draw();api.ready(false);
+};
+R.find=function(box,s,api){
+  box.append(h("span",{class:"qlabel"},"Tap the word"),HT(h("p",{class:"q"}),s.q));
+  var inb=false,toks=s.s.split(" ").map(function(w){var tg=false;if(w.indexOf("[")>-1)inb=true;if(inb)tg=true;if(w.indexOf("]")>-1)inb=false;return {t:w.replace(/[\[\]]/g,""),tg:tg,on:false}});
+  var wrap=h("div",{class:"toks"}),locked=false;
+  toks.forEach(function(t){t.el=h("button",{type:"button",class:"tok","aria-pressed":"false",on:{click:function(){if(locked)return;t.on=!t.on;t.el.classList.toggle("on",t.on);t.el.setAttribute("aria-pressed",String(t.on));api.ready(toks.some(function(x){return x.on}))}}},t.t);wrap.append(t.el)});
+  box.append(wrap);
+  api.checkable(function(){
+    locked=true;var ok=toks.every(function(t){return t.on===t.tg});
+    toks.forEach(function(t){t.el.classList.remove("on");if(t.tg)t.el.classList.add("right");else if(t.on)t.el.classList.add("bad")});
+    var right=toks.filter(function(t){return t.tg}).map(function(t){return t.t}).join(" ");
+    api.result(ok,feedback(ok,s,{right:esc(right)}));
+  });
+  api.ready(false);
+};
+R.sort=function(box,s,api){
+  box.append(h("span",{class:"qlabel"},"Sort"),HT(h("p",{class:"q"}),s.q));
+  var rows=shuffle(s.i.map(function(it){return {t:it[0],c:it[1],pick:-1}})),list=h("div",{class:"srows"}),locked=false;
+  rows.forEach(function(r){
+    var btns=h("div",{class:"sbtns",role:"group"});r.bs=[];
+    s.c.forEach(function(cn,ci){var b=h("button",{type:"button",class:"sbtn","aria-pressed":"false",on:{click:function(){if(locked)return;r.pick=ci;r.bs.forEach(function(x,k){x.setAttribute("aria-pressed",String(k===ci))});api.ready(rows.every(function(x){return x.pick>-1}))}}},cn);r.bs.push(b);btns.append(b)});
+    r.row=h("div",{class:"srow"},HT(h("span",{class:"sit"}),r.t),btns);list.append(r.row);
+  });
+  box.append(list);
+  api.checkable(function(){
+    locked=true;var bad=0;
+    rows.forEach(function(r){var ok=r.pick===r.c;if(!ok)bad++;r.row.classList.add(ok?"right":"wrong");
+      if(!ok)r.row.append(HT(h("span",{class:"fixnote"}),"<b>Right answer:</b> "+esc(s.c[r.c])))});
+    api.result(bad===0,feedback(bad===0,s,{extra:bad?bad+" of "+rows.length+" were wrong. The right answers are shown above.":null}));
+  });
+  api.ready(false);
+};
+R.match=function(box,s,api){
+  box.append(h("span",{class:"qlabel"},"Match"),HT(h("p",{class:"q"}),s.q));
+  var left=s.p.map(function(p,i){return {t:p[0],i:i}}),right=shuffle(s.p.map(function(p,i){return {t:p[1],i:i}}));
+  var sel=null,mist=0,done=0,total=s.p.length;
+  var lc=h("div",{class:"mcol"}),rc=h("div",{class:"mcol"});
+  left.forEach(function(it){it.el=h("button",{type:"button",class:"mbtn",on:{click:function(){if(it.ok)return;if(sel)sel.el.classList.remove("sel");sel=it;it.el.classList.add("sel")}}},it.t);lc.append(it.el)});
+  right.forEach(function(it){it.el=h("button",{type:"button",class:"mbtn",on:{click:function(){
+    if(it.ok||!sel)return;
+    if(sel.i===it.i){sel.ok=it.ok=true;sel.el.classList.remove("sel");sel.el.classList.add("matched");it.el.classList.add("matched");sel=null;done++;
+      if(done===total)api.result(mist===0,feedback(mist===0,s,{extra:mist?"You made "+mist+" wrong "+(mist===1?"try":"tries")+". Try again next time.":null}))}
+    else{mist++;it.el.classList.add("shake");setTimeout(function(){it.el.classList.remove("shake")},500);sel.el.classList.remove("sel");sel=null}
+  }}},it.t);rc.append(it.el)});
+  box.append(h("div",{class:"mcols"},lc,rc),h("p",{class:"note"},"Tap a word on the left, then its pair on the right."));
+  api.waiting("Match all the pairs");
+};
+
+/* ---- player ---- */
+var P=null;
+function openPlayer(lesson,steps,meta){
+  P={lesson:lesson,meta:meta||{},queue:steps.map(function(s){return {s:s,retry:false}}),i:0,right:0,count:0,key:null};
+  $("#shell").hidden=true;$("#player").hidden=false;window.scrollTo(0,0);renderStep();
+}
+function closePlayer(){P=null;$("#player").hidden=true;$("#shell").hidden=false;refreshAll();window.scrollTo(0,0)}
+function renderStep(){
+  var box=$("#player");box.replaceChildren();
+  var item=P.queue[P.i],s=item.s,n=P.queue.length;
+  var cnt=h("span",{class:"pcount"},(P.i+1)+" / "+n);
+  var meter=h("div",{class:"meter",role:"progressbar","aria-label":"Lesson progress","aria-valuemin":"0","aria-valuemax":String(n),"aria-valuenow":String(P.i)},h("i",{style:"width:"+Math.round(100*P.i/n)+"%"}));
+  var card=h("div",{class:"card"}),fbBox=h("div"),go=h("button",{class:"btn",type:"button"},"Continue"),bar=h("div",{class:"bar"},go);
+  box.append(h("div",{class:"ptop"},h("button",{class:"btn ghost sm",type:"button",on:{click:closePlayer}},"Close"),h("span",{class:"ptitle"},P.lesson.title),cnt),meter,card,fbBox,bar);
+  var locked=false,ctx={key:null};P.key=null;
+  function setGo(label,en,fn){go.textContent=label;go.disabled=!en;go.onclick=fn}
+  var api={
+    next:function(){setGo(P.i===P.queue.length-1?"Finish":"Continue",true,advance)},
+    waiting:function(label){setGo(label,false,null)},
+    checkable:function(fn){setGo("Check",false,function(){if(!locked)fn()})},
+    ready:function(on){if(!locked&&go.textContent==="Check")go.disabled=!on},
+    result:function(ok,node){
+      if(locked)return;locked=true;
+      if(!item.retry){P.count++;if(ok)P.right++;else P.queue.push({s:s,retry:true})}
+      cnt.textContent=(P.i+1)+" / "+P.queue.length;
+      fbBox.append(node);api.next();go.focus({preventScroll:true});node.scrollIntoView({block:"nearest"});
+    }
+  };
+  R[s.t](card,s,api,ctx);P.key=ctx.key;
+}
+function advance(){P.i++;if(P.i>=P.queue.length)finish();else{renderStep();window.scrollTo(0,0)}}
+document.addEventListener("keydown",function(e){
+  if(!P||!P.key)return;var t=e.target.tagName;if(t==="INPUT"||t==="SELECT"||t==="TEXTAREA")return;
+  if(e.key>="1"&&e.key<="9"){P.key(Number(e.key))}
+});
+function finish(){
+  var L=P.lesson,box=$("#player"),mix=P.meta.mix;box.replaceChildren();
+  var pct=P.count?Math.round(100*P.right/P.count):100,stars=pct>=90?3:pct>=70?2:1;
+  if(!mix){var prev=S.done[L.id];S.done[L.id]={pct:Math.max(prev?prev.pct:0,pct),stars:Math.max(prev?prev.stars:0,stars)};S.last=L.id;save()}
+  var msg=pct>=90?"Excellent. You understand this well.":pct>=70?"Good work. Read the key points below, then try again for three stars.":"You finished it. Do it once more. The second time is much easier.";
+  box.append(h("span",{class:"label"},mix?"Revision finished":"Lesson finished"),
+    h("p",{class:"score"},P.count?P.right+" / "+P.count:"Done"),
+    h("p",{class:"stars","aria-label":stars+" out of 3 stars"},"★★★".slice(0,stars)+"☆☆☆".slice(0,3-stars)),
+    h("p",null,msg));
+  if(P.count)box.append(h("p",{class:"note"},"Score counts your first try on each question. Questions you missed came back once more."));
+  if(L.sum&&L.sum.length){var u=h("ul");L.sum.forEach(function(x){u.append(HT(h("li"),x))});box.append(h("div",{class:"remember"},h("span",{class:"label"},"Key points to remember"),u))}
+  var row=h("div",{class:"btnrow"});
+  if(mix)row.append(h("button",{class:"btn",type:"button",on:{click:function(){startRevise()}}},"Another round"));
+  else{
+    var nx=ALL[BYID[L.id].n];
+    if(nx)row.append(h("button",{class:"btn",type:"button",on:{click:function(){startLesson(nx.l.id)}}},"Next: "+nx.l.title));
+    row.append(h("button",{class:"btn ghost",type:"button",on:{click:function(){startLesson(L.id)}}},"Do this lesson again"));
+  }
+  row.append(h("button",{class:"btn ghost",type:"button",on:{click:closePlayer}},"Back to course"));
+  box.append(row);window.scrollTo(0,0);
+}
+function startLesson(id){var x=BYID[id];if(x)openPlayer(x.l,x.l.steps)}
+
+/* ---- course map ---- */
+function stars(n){return "★★★".slice(0,n)}
+function renderHome(){
+  var box=$("#home");box.replaceChildren();
+  var done=ALL.filter(function(x){return S.done[x.l.id]}).length;
+  var next=ALL.filter(function(x){return !S.done[x.l.id]})[0];
+  var segs=h("div",{class:"segs"});
+  COURSE.forEach(function(m,mi){var d=m.lessons.filter(function(l){return S.done[l.id]}).length;
+    segs.append(h("div",{class:"seg",style:"flex:"+m.lessons.length+";--c:var(--m"+(mi+1)+")"},h("i",{style:"width:"+Math.round(100*d/m.lessons.length)+"%"})))});
+  var ov=h("div",{class:"overall"},
+    h("span",{class:"label"},"Your progress"),
+    h("p",{style:"margin:0"},done?("You have finished "+done+" of "+ALL.length+" lessons."):("New here? Start with lesson 1 and go in order. Each lesson takes about 10 to 15 minutes.")),
+    segs);
+  if(next)ov.append(h("div",{class:"btnrow",style:"margin-top:0"},h("button",{class:"btn",type:"button",on:{click:function(){startLesson(next.l.id)}}},(done?"Continue: ":"Start: ")+next.l.title)));
+  else ov.append(h("p",null,"You finished every lesson. Use Revise to keep your English sharp."));
+  box.append(ov);
+  COURSE.forEach(function(m,mi){
+    var sec=h("div",{class:"mod",style:"--c:var(--m"+(mi+1)+")"},h("h2",null,m.title),h("p",null,m.blurb));
+    m.lessons.forEach(function(l){
+      var x=BYID[l.id],d=S.done[l.id];
+      sec.append(h("button",{type:"button",class:"lrow"+(d?" done":""),style:"--c:var(--m"+(mi+1)+")",on:{click:function(){startLesson(l.id)}}},
+        h("span",{class:"num"},String(x.n)),
+        h("span",{class:"lt"},h("b",null,l.title),h("span",null,l.sub)),
+        h("span",{class:"st2"},d?stars(d.stars)+" "+d.pct+"%":"Start")));
+    });
+    box.append(sec);
+  });
+  var rb=h("button",{class:"btn ghost sm",type:"button"},"Erase my progress"),armed=false,timer;
+  rb.addEventListener("click",function(){
+    if(!armed){armed=true;rb.textContent="Tap again to erase everything";timer=setTimeout(function(){armed=false;rb.textContent="Erase my progress"},4000)}
+    else{clearTimeout(timer);S=fresh();save();refreshAll()}
+  });
+  box.append(h("p",{class:"note"},"Your progress is saved in this browser only."),rb);
+}
+
+/* ---- revision mix ---- */
+var PRACTICE={mcq:1,build:1,type:1,find:1,sort:1,match:1};
+var rv={scope:"done",n:10};
+function revisePool(){
+  var steps=[];ALL.forEach(function(x){if(rv.scope==="all"||S.done[x.l.id])x.l.steps.forEach(function(s){if(PRACTICE[s.t])steps.push(s)})});return steps;
+}
+function startRevise(){
+  var pool=revisePool();if(!pool.length)return;
+  openPlayer({id:"mix",title:"Mixed revision",sum:[]},shuffle(pool).slice(0,rv.n),{mix:true});
+}
+function pills(label,items,cur,set){
+  var row=h("div",{class:"pills",role:"group","aria-label":label});
+  items.forEach(function(it){row.append(h("button",{type:"button",class:"pill","aria-pressed":String(cur===it[0]),on:{click:function(){set(it[0]);renderRevise()}}},it[1]))});return row;
+}
+function renderRevise(){
+  var box=$("#revise");box.replaceChildren();
+  var pool=revisePool(),doneN=ALL.filter(function(x){return S.done[x.l.id]}).length;
+  box.append(HT(h("p"),"Questions from your lessons, mixed up in a new order every time. Missed questions come back once more. This is the fastest way to remember."),
+    h("span",{class:"label"},"Questions from"),
+    pills("Questions from",[["done","Lessons I finished ("+doneN+")"],["all","All lessons"]],rv.scope,function(v){rv.scope=v}),
+    h("span",{class:"label"},"Questions in a round"),
+    pills("Questions in a round",[[10,"10"],[15,"15"],[20,"20"]],rv.n,function(v){rv.n=v}));
+  if(pool.length)box.append(h("button",{class:"btn",type:"button",on:{click:startRevise}},"Start revision"),h("p",{class:"note",style:"margin-top:10px"},pool.length+" questions to choose from."));
+  else box.append(h("div",{class:"empty"},h("p",null,"Finish your first lesson, then your revision questions appear here. Or choose All lessons."),h("button",{class:"btn ghost sm",type:"button",on:{click:function(){rv.scope="all";renderRevise()}}},"Use all lessons")));
+}
+
+/* ---- notes ---- */
+function renderNotes(){
+  var box=$("#notes");box.replaceChildren();
+  var inp=h("input",{type:"search",class:"field",placeholder:"Search the notes (for example: modal, since, plural)","aria-label":"Search the notes"});
+  var list=h("div"),items=[];
+  COURSE.forEach(function(m,mi){
+    list.append(h("h2",{style:"font-size:1.25rem;margin:18px 0 8px;color:var(--m"+(mi+1)+")"},m.title));
+    m.lessons.forEach(function(l){
+      var x=BYID[l.id],ul=h("ul");(l.sum||[]).forEach(function(t){ul.append(HT(h("li"),t))});
+      var d=h("details",{class:"nd"},h("summary",null,x.n+". "+l.title),h("div",{class:"nb"},ul,h("button",{class:"btn ghost sm",type:"button",on:{click:function(){startLesson(l.id)}}},"Open lesson")));
+      items.push({d:d,txt:(l.title+" "+l.sub+" "+(l.sum||[]).join(" ")).toLowerCase().replace(/<[^>]+>/g,"")});list.append(d);
+    });
+  });
+  inp.addEventListener("input",function(){var q=inp.value.trim().toLowerCase();items.forEach(function(it){var m=!q||it.txt.indexOf(q)>-1;it.d.hidden=!m;it.d.open=!!q&&m})});
+  box.append(inp,list);
+}
+
+/* ---- tabs ---- */
+var TABS=["home","revise","notes"];
+function showTab(n){TABS.forEach(function(k){$("#"+k).hidden=k!==n;$("#t-"+k).setAttribute("aria-selected",String(k===n))})}
+TABS.forEach(function(n){$("#t-"+n).addEventListener("click",function(){showTab(n)})});
+function refreshAll(){renderHome();renderRevise();renderNotes()}
+refreshAll();
+})();
+</script>
+
+</body></html>
